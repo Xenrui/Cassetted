@@ -113,9 +113,9 @@
 
 /* ── Community reviews section ── */
 .c-browse-community__heading {
-  font-family: 'Special Elite', 'Courier New', monospace;
-  font-size: 1.65rem;
-  font-weight: 400;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
   color: #ffffff;
   margin: 0 0 1.5rem;
   letter-spacing: 0.01em;
@@ -147,10 +147,6 @@
 }
 
 .c-browse .c-review-card__actions { margin-top: 0.1rem; }
-
-/* Like button gets a pink hint in browse */
-.c-browse .c-review-card .c-action-btn:first-child { color: rgba(255, 130, 150, .65); }
-.c-browse .c-review-card .c-action-btn:first-child:hover { color: rgba(255, 130, 150, .95) !important; }
 
 /* ── Explore page ── */
 .c-explore__breadcrumb {

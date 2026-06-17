@@ -16,51 +16,65 @@ namespace Cassetted.Services
 
         public async Task<ProfileViewModel?> GetProfileAsync(string profileUserId, string? currentUserId)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == profileUserId);
+            var user = await _db.Users
+                .AsNoTracking()
+                .Where(u => u.Id == profileUserId)
+                .Select(u => new { u.DisplayName, u.Bio })
+                .FirstOrDefaultAsync();
+
             if (user == null) return null;
 
-            var reviews = await _db.Reviews
-                .Where(r => r.UserId == profileUserId)
-                .Select(r => new
-                {
-                    r.Rating,
-                    CategoryName = r.Item.Category.Name,
-                    ItemName = r.Item.Name
-                })
-                .ToListAsync();
+            var userReviews = _db.Reviews.AsNoTracking().Where(r => r.UserId == profileUserId);
 
-            var followerCount = await _db.UserFollows.CountAsync(uf => uf.FollowedId == profileUserId);
-            var followingCount = await _db.UserFollows.CountAsync(uf => uf.FollowerId == profileUserId);
+            var reviewCount = await userReviews.CountAsync();
 
-            bool isFollowing = currentUserId != null && currentUserId != profileUserId &&
-                await _db.UserFollows.AnyAsync(uf => uf.FollowerId == currentUserId && uf.FollowedId == profileUserId);
+            var avgRatingNullable = await userReviews.AverageAsync(r => (decimal?)r.Rating);
+            var avgRating = avgRatingNullable.HasValue ? Math.Round(avgRatingNullable.Value, 1) : 0m;
 
-            decimal avgRating = reviews.Count > 0
-                ? Math.Round(reviews.Average(r => r.Rating), 1)
-                : 0m;
+            var followerCount = await _db.UserFollows
+                .AsNoTracking()
+                .CountAsync(uf => uf.FollowedId == profileUserId);
 
-            var categoryGroups = reviews
-                .GroupBy(r => r.CategoryName)
+            var followingCount = await _db.UserFollows
+                .AsNoTracking()
+                .CountAsync(uf => uf.FollowerId == profileUserId);
+
+            var isFollowing = currentUserId != null && currentUserId != profileUserId &&
+                await _db.UserFollows
+                    .AsNoTracking()
+                    .AnyAsync(uf => uf.FollowerId == currentUserId && uf.FollowedId == profileUserId);
+
+            var categoryGroups = await userReviews
+                .GroupBy(r => r.Item.Category.Name)
                 .Select(g => new CategoryActivityViewModel
                 {
                     CategoryName = g.Key,
                     ReviewCount = g.Count()
                 })
                 .OrderByDescending(c => c.ReviewCount)
-                .ToList();
+                .ToListAsync();
+
+            var maxActivity = categoryGroups.Count > 0 ? categoryGroups.Max(c => c.ReviewCount) : 0;
+            foreach (var group in categoryGroups)
+            {
+                group.ActivityPercent = maxActivity > 0
+                    ? (int)Math.Round((double)group.ReviewCount / maxActivity * 100)
+                    : 0;
+            }
 
             var mostReviewedCategory = categoryGroups.FirstOrDefault()?.CategoryName;
 
-            var highestRatedItem = reviews.Count > 0
-                ? reviews.OrderByDescending(r => r.Rating).First().ItemName
-                : null;
+            var highestRatedItem = await userReviews
+                .OrderByDescending(r => r.Rating)
+                .Select(r => r.Item.Name)
+                .FirstOrDefaultAsync();
 
             return new ProfileViewModel
             {
                 UserId = profileUserId,
                 DisplayName = user.DisplayName,
                 Bio = user.Bio,
-                ReviewCount = reviews.Count,
+                ReviewCount = reviewCount,
                 FollowerCount = followerCount,
                 FollowingCount = followingCount,
                 AverageRating = avgRating,

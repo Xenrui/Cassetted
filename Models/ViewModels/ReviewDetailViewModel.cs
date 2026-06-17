@@ -25,5 +25,7 @@ namespace Cassetted.Models.ViewModels
         public bool IsLikedByCurrentUser { get; set; }
         public bool IsOwnReview { get; set; }
         public List<CommentViewModel> Comments { get; set; } = [];
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
+        public int FilledStars => (int)Math.Round(Rating);
     }
 }

@@ -13,9 +13,19 @@ namespace Cassetted.Services
             _db = db;
         }
 
+        public async Task<string?> GetCategoryNameAsync(int categoryId)
+        {
+            return await _db.Categories
+                .AsNoTracking()
+                .Where(c => c.Id == categoryId)
+                .Select(c => c.Name)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<List<BrowseItemViewModel>> GetExploreItemsAsync(int? categoryId, string sortBy)
         {
             var query = _db.Items
+                .AsNoTracking()
                 .Where(i => i.Reviews.Any() && (!categoryId.HasValue || i.CategoryId == categoryId.Value))
                 .Select(i => new BrowseItemViewModel
                 {
@@ -41,6 +51,7 @@ namespace Cassetted.Services
         public async Task<List<BrowseItemViewModel>> GetPopularItemsAsync(int? categoryId)
         {
             return await _db.Items
+                .AsNoTracking()
                 .Where(i => i.Reviews.Any() && (!categoryId.HasValue || i.CategoryId == categoryId.Value))
                 .Select(i => new BrowseItemViewModel
                 {
@@ -59,7 +70,7 @@ namespace Cassetted.Services
 
         public async Task<List<FeedReviewViewModel>> GetCommunityReviewsAsync(int? categoryId, int page, int pageSize)
         {
-            var source = _db.Reviews.AsQueryable();
+            var source = _db.Reviews.AsNoTracking().AsQueryable();
             if (categoryId.HasValue)
                 source = source.Where(r => r.Item.CategoryId == categoryId.Value);
 
@@ -88,7 +99,7 @@ namespace Cassetted.Services
 
         public async Task<int> GetReviewCountAsync(int? categoryId)
         {
-            var query = _db.Reviews.AsQueryable();
+            var query = _db.Reviews.AsNoTracking().AsQueryable();
             if (categoryId.HasValue)
                 query = query.Where(r => r.Item.CategoryId == categoryId.Value);
             return await query.CountAsync();
@@ -97,6 +108,7 @@ namespace Cassetted.Services
         public async Task<ItemDetailViewModel?> GetItemDetailsAsync(int itemId)
         {
             var item = await _db.Items
+                .AsNoTracking()
                 .Where(i => i.Id == itemId)
                 .Select(i => new
                 {
@@ -112,6 +124,7 @@ namespace Cassetted.Services
             if (item == null) return null;
 
             var reviews = await _db.Reviews
+                .AsNoTracking()
                 .Where(r => r.ItemId == itemId)
                 .Select(r => new FeedReviewViewModel
                 {

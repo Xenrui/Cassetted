@@ -16,23 +16,27 @@ namespace Cassetted.Services
 
         public async Task<List<FeedReviewViewModel>> GetForYouFeedAsync(string currentUserId)
         {
-            return await FeedQuery(_db.Reviews.Where(r => r.UserId != currentUserId), currentUserId);
+            return await FeedQuery(
+                _db.Reviews.AsNoTracking().Where(r => r.UserId != currentUserId),
+                currentUserId);
         }
 
         public async Task<List<FeedReviewViewModel>> GetFriendsFeedAsync(string currentUserId)
         {
             var followedIds = _db.UserFollows
+                .AsNoTracking()
                 .Where(f => f.FollowerId == currentUserId)
                 .Select(f => f.FollowedId);
 
             return await FeedQuery(
-                _db.Reviews.Where(r => followedIds.Contains(r.UserId) && r.UserId != currentUserId),
+                _db.Reviews.AsNoTracking().Where(r => followedIds.Contains(r.UserId) && r.UserId != currentUserId),
                 currentUserId);
         }
 
         public async Task<List<TrendingItemViewModel>> GetTrendingItemsAsync()
         {
             return await _db.Items
+                .AsNoTracking()
                 .Where(i => i.Reviews.Any())
                 .Select(i => new TrendingItemViewModel
                 {

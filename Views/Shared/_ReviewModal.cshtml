@@ -9,10 +9,10 @@
                             data-bs-dismiss="modal" aria-label="Close">&#x2715;</button>
                 </div>
 
-                <form id="reviewForm" class="c-review-modal__body d-flex flex-column">
+                <form id="reviewForm" class="c-review-modal__body d-flex flex-column gap-3">
                     @Html.AntiForgeryToken()
 
-                    <div class="c-review-modal__field d-flex flex-column">
+                    <div class="c-review-modal__field d-flex flex-column gap-2">
                         <label class="c-review-modal__label">Category</label>
                         <select class="c-review-modal__select" id="reviewCategory" name="CategoryId">
                             <option value="" disabled selected>Select Category</option>
@@ -25,14 +25,14 @@
                         </select>
                     </div>
 
-                    <div class="c-review-modal__field d-flex flex-column">
+                    <div class="c-review-modal__field d-flex flex-column gap-2">
                         <label class="c-review-modal__label">Title</label>
                         <input type="text" class="c-review-modal__input" id="reviewTitle" name="ItemName" />
                     </div>
 
-                    <div class="c-review-modal__field d-flex flex-column">
+                    <div class="c-review-modal__field d-flex flex-column gap-2">
                         <label class="c-review-modal__label">Rating</label>
-                        <div class="c-review-modal__stars d-flex" id="modalStars">
+                        <div class="c-review-modal__stars d-flex gap-1" id="modalStars">
                             <span class="c-review-modal__star" data-value="1">&#9733;</span>
                             <span class="c-review-modal__star" data-value="2">&#9733;</span>
                             <span class="c-review-modal__star" data-value="3">&#9733;</span>
@@ -42,7 +42,7 @@
                         <input type="hidden" id="reviewRating" name="Rating" value="0" />
                     </div>
 
-                    <div class="c-review-modal__field d-flex flex-column">
+                    <div class="c-review-modal__field d-flex flex-column gap-2">
                         <label class="c-review-modal__label">Comments</label>
                         <textarea class="c-review-modal__textarea" id="reviewComments" name="Body" rows="8"></textarea>
                     </div>

@@ -2,8 +2,6 @@
 @{
     ViewData["Title"] = $"View Post - {Model.UserDisplayName}";
     ViewData["BodyClass"] = "cassetted-landing";
-    var badgeClass = Model.CategoryName.ToLower().Replace(" ", "");
-    int filled = (int)Math.Round(Model.Rating);
 }
 
 @section Styles {
@@ -12,7 +10,7 @@
 
 <div class="c-post-page">
 
-    <a href="javascript:history.back()" class="c-post__back d-inline-flex align-items-center justify-content-center" aria-label="Go back">
+    <a href="javascript:history.back()" class="c-post__back d-inline-flex align-items-center justify-content-center mb-4" aria-label="Go back">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -35,22 +33,22 @@
                         </svg>
                     </div>
                     <div class="d-flex flex-column">
-                        <div class="c-review-card__meta d-flex align-items-center">
+                        <div class="c-review-card__meta d-flex align-items-center gap-1">
                             <a class="c-review-card__username" asp-controller="Profile" asp-action="Index" asp-route-userId="@Model.UserId">@Model.UserDisplayName</a>
                             <span class="c-review-card__sep mx-1">·</span>
                             <span class="c-review-card__date">@Model.CreatedAt.ToString("MM/dd/yyyy")</span>
                         </div>
                         <div class="c-stars mt-1">
-                            @Html.Raw(new string('★', filled))
-                            @if (filled < 5)
+                            @Html.Raw(new string('★', Model.FilledStars))
+                            @if (Model.FilledStars < 5)
                             {
-                                <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                <span class="c-star--empty">@Html.Raw(new string('★', 5 - Model.FilledStars))</span>
                             }
                         </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <span class="c-badge c-badge--@badgeClass rounded-pill">@Model.CategoryName</span>
+                    <span class="c-badge c-badge--@Model.BadgeSlug rounded-pill">@Model.CategoryName</span>
                     @if (Model.IsOwnReview)
                     {
                         <div class="dropdown">
@@ -72,7 +70,7 @@
             <h3 class="c-review-card__title">@Model.ItemName</h3>
             <p class="c-review-card__body">@Model.Body</p>
 
-            <div class="c-review-card__actions d-flex">
+            <div class="c-review-card__actions d-flex gap-1">
                 <button class="c-action-btn c-like-btn d-inline-flex align-items-center gap-2 @(Model.IsLikedByCurrentUser ? "c-like-btn--liked" : "")"
                         data-review-id="@Model.Id">
                     <svg class="c-like-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="@(Model.IsLikedByCurrentUser ? "currentColor" : "none")">
@@ -99,7 +97,7 @@
             {
                 @foreach (var comment in Model.Comments)
                 {
-                    <div class="c-comment d-flex align-items-start">
+                    <div class="c-comment d-flex align-items-start gap-3 mb-3">
                         <div class="c-comment__avatar">
                             <svg viewBox="0 0 40 40" fill="none">
                                 <circle cx="20" cy="20" r="20" fill="#2a5045" />
@@ -117,7 +115,7 @@
         </div>
 
         <!-- ── Reply input ── -->
-        <form asp-controller="Review" asp-action="AddComment" method="post" class="c-post-card__reply d-flex align-items-center">
+        <form asp-controller="Review" asp-action="AddComment" method="post" class="c-post-card__reply d-flex align-items-center gap-3">
             @Html.AntiForgeryToken()
             <input type="hidden" name="reviewId" value="@Model.Id" />
             <div class="c-comment__avatar flex-shrink-0">

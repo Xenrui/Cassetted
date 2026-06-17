@@ -4,6 +4,8 @@ namespace Cassetted.Models.ViewModels
     {
         public string CategoryName { get; set; } = string.Empty;
         public int ReviewCount { get; set; }
+        public int ActivityPercent { get; set; }
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
     }
 
     public class ProfileViewModel

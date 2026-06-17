@@ -15,18 +15,18 @@
 <div class="c-library">
 
     <!-- ── Header ── -->
-    <div class="c-library__header">
+    <div class="c-library__header d-flex align-items-end justify-content-between gap-4 mb-5">
         <div>
             <h1 class="c-library__username">
                 <span class="c-library__username-accent">@Model.UserDisplayName</span>'s Library
             </h1>
-            <div class="c-library__meta">
+            <div class="c-library__meta d-flex align-items-center gap-2">
                 <span>@reviewCount review@(reviewCount != 1 ? "s" : "")</span>
                 <span class="c-library__meta-sep">·</span>
                 <span>@favCount favorite@(favCount != 1 ? "s" : "")</span>
             </div>
         </div>
-        <button class="c-library__write-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+        <button class="c-library__write-btn d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
             </svg>
@@ -35,8 +35,8 @@
     </div>
 
     <!-- ── Recent Reviews ── -->
-    <section class="c-lib-section">
-        <div class="c-lib-section__heading d-flex align-items-center gap-3">
+    <section class="c-lib-section mb-5">
+        <div class="c-lib-section__heading d-flex align-items-center gap-3 mb-4">
             <h2 class="c-lib-section__title">Recent Reviews</h2>
             @if (reviewCount > 0)
             {
@@ -54,7 +54,7 @@
                     </svg>
                 </span>
                 <p class="c-lib-empty__text">You haven't reviewed anything yet.<br />Start building your collection.</p>
-                <button class="c-lib-empty__btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                <button class="c-lib-empty__btn d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                         <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
                     </svg>
@@ -64,20 +64,18 @@
         }
         else
         {
-            <div class="c-lib-track">
+            <div class="c-lib-track d-flex gap-3">
                 @foreach (var review in Model.RecentReviews)
                 {
-                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
-                    int filled = (int)Math.Round(review.Rating);
                     <div class="c-lib-card @(review.IsFavorited ? "c-lib-card--fav" : "")"
                          data-href="@Url.Action("Details", "Review", new { id = review.Id })">
-                        <span class="c-badge c-badge--@badgeClass rounded-pill c-lib-card__badge">@review.CategoryName</span>
+                        <span class="c-badge c-badge--@review.BadgeSlug rounded-pill c-lib-card__badge">@review.CategoryName</span>
                         <div class="c-lib-card__top">
                             <div class="c-lib-card__stars">
-                                @Html.Raw(new string('★', filled))
-                                @if (filled < 5)
+                                @Html.Raw(new string('★', review.FilledStars))
+                                @if (review.FilledStars < 5)
                                 {
-                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - review.FilledStars))</span>
                                 }
                             </div>
                             <h3 class="c-lib-card__title">@review.ItemName</h3>
@@ -85,7 +83,7 @@
                         <div class="c-lib-card__body-wrap">
                             <p class="c-lib-card__body">@review.Body</p>
                         </div>
-                        <div class="c-lib-card__footer">
+                        <div class="c-lib-card__footer d-flex align-items-center justify-content-between">
                             <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
                             <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation()">
                                 @if (review.IsFavorited)
@@ -113,8 +111,8 @@
     </section>
 
     <!-- ── Favorites ── -->
-    <section class="c-lib-section">
-        <div class="c-lib-section__heading d-flex align-items-center gap-3">
+    <section class="c-lib-section mb-5">
+        <div class="c-lib-section__heading d-flex align-items-center gap-3 mb-4">
             <h2 class="c-lib-section__title">Favorites</h2>
             @if (favCount > 0)
             {
@@ -136,20 +134,18 @@
         }
         else
         {
-            <div class="c-lib-track">
+            <div class="c-lib-track d-flex gap-3">
                 @foreach (var review in Model.Favorites)
                 {
-                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
-                    int filled = (int)Math.Round(review.Rating);
                     <div class="c-lib-card c-lib-card--fav"
                          data-href="@Url.Action("Details", "Review", new { id = review.Id })">
-                        <span class="c-badge c-badge--@badgeClass rounded-pill c-lib-card__badge">@review.CategoryName</span>
+                        <span class="c-badge c-badge--@review.BadgeSlug rounded-pill c-lib-card__badge">@review.CategoryName</span>
                         <div class="c-lib-card__top">
                             <div class="c-lib-card__stars">
-                                @Html.Raw(new string('★', filled))
-                                @if (filled < 5)
+                                @Html.Raw(new string('★', review.FilledStars))
+                                @if (review.FilledStars < 5)
                                 {
-                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - review.FilledStars))</span>
                                 }
                             </div>
                             <h3 class="c-lib-card__title">@review.ItemName</h3>
@@ -157,7 +153,7 @@
                         <div class="c-lib-card__body-wrap">
                             <p class="c-lib-card__body">@review.Body</p>
                         </div>
-                        <div class="c-lib-card__footer">
+                        <div class="c-lib-card__footer d-flex align-items-center justify-content-between">
                             <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
                             <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation()">
                                 <span class="c-lib-card__fav-icon">&#9733;</span>

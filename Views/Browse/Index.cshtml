@@ -16,7 +16,7 @@
     <h1 class="c-browse__heading">@Model.CategoryHeading</h1>
 
     <!-- ── Explore section ── -->
-    <section class="c-browse-explore">
+    <section class="c-browse-explore mb-5">
         <div class="d-flex align-items-center justify-content-between mb-3">
             <h2 class="c-browse-explore__title">Explore</h2>
             <a asp-controller="Browse" asp-action="Explore" asp-route-category="@Model.CategoryId" class="c-browse-explore__view-all">View All</a>
@@ -32,11 +32,10 @@
                 <div class="c-browse-explore__track">
                     @foreach (var item in Model.PopularItems)
                     {
-                        var badgeClass = item.CategoryName.ToLower().Replace(" ", "");
                         <a class="c-item-card" asp-controller="Browse" asp-action="Item" asp-route-id="@item.Id">
-                            <span class="c-item-card__badge c-badge c-badge--@badgeClass rounded-pill">@item.CategoryName</span>
+                            <span class="c-item-card__badge c-badge c-badge--@item.BadgeSlug rounded-pill">@item.CategoryName</span>
                             <h3 class="c-item-card__title">@item.Name</h3>
-                            <div class="c-item-card__rating d-flex align-items-center">
+                            <div class="c-item-card__rating d-flex align-items-center gap-2 mb-2">
                                 <span class="c-item-card__rating-star">&#9733;</span>
                                 <span>@item.AverageRating.ToString("0.0")/5 Rating</span>
                             </div>
@@ -70,8 +69,6 @@
             {
                 @foreach (var review in Model.Reviews)
                 {
-                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
-                    int filled = (int)Math.Round(review.Rating);
                     <div class="c-review-card mb-3" data-href="@Url.Action("Details", "Review", new { id = review.Id })">
                         <div class="c-review-card__header d-flex align-items-start justify-content-between mb-2">
                             <div class="d-flex align-items-start gap-3">
@@ -83,25 +80,25 @@
                                     </svg>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <div class="c-review-card__meta d-flex align-items-center">
+                                    <div class="c-review-card__meta d-flex align-items-center gap-1">
                                         <a class="c-review-card__username" asp-controller="Profile" asp-action="Index" asp-route-userId="@review.UserId">@review.UserDisplayName</a>
                                         <span class="c-review-card__sep mx-1">·</span>
                                         <span class="c-review-card__date">@review.CreatedAt.ToString("MM/dd/yyyy")</span>
                                     </div>
                                     <div class="c-stars mt-1">
-                                        @Html.Raw(new string('★', filled))
-                                        @if (filled < 5)
+                                        @Html.Raw(new string('★', review.FilledStars))
+                                        @if (review.FilledStars < 5)
                                         {
-                                            <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                            <span class="c-star--empty">@Html.Raw(new string('★', 5 - review.FilledStars))</span>
                                         }
                                     </div>
                                 </div>
                             </div>
-                            <span class="c-badge c-badge--@badgeClass rounded-pill flex-shrink-0">@review.CategoryName</span>
+                            <span class="c-badge c-badge--@review.BadgeSlug rounded-pill flex-shrink-0">@review.CategoryName</span>
                         </div>
                         <h3 class="c-review-card__title"><a asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">@review.ItemName</a></h3>
                         <p class="c-review-card__body">@review.Body</p>
-                        <div class="c-review-card__actions d-flex">
+                        <div class="c-review-card__actions d-flex gap-1">
                             <button class="c-action-btn d-inline-flex align-items-center gap-2">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
@@ -127,19 +124,19 @@
             int pgEnd = Math.Min(Model.TotalPages, pgStart + 4);
             pgStart = Math.Max(1, pgEnd - 4);
 
-            <nav class="c-browse-pagination d-flex align-items-center justify-content-center" aria-label="Reviews pagination">
+            <nav class="c-browse-pagination d-flex align-items-center justify-content-center gap-1" aria-label="Reviews pagination">
                 @if (Model.CurrentPage > 1)
                 {
-                    <a href="?category=@Model.CategoryId&page=@(Model.CurrentPage - 1)" class="c-pg__arrow" aria-label="Previous page">&#8592;</a>
+                    <a href="?category=@Model.CategoryId&page=@(Model.CurrentPage - 1)" class="c-pg__arrow d-inline-flex align-items-center justify-content-center" aria-label="Previous page">&#8592;</a>
                 }
                 else
                 {
-                    <span class="c-pg__arrow c-pg__arrow--disabled" aria-disabled="true">&#8592;</span>
+                    <span class="c-pg__arrow c-pg__arrow--disabled d-inline-flex align-items-center justify-content-center" aria-disabled="true">&#8592;</span>
                 }
 
                 @if (pgStart > 1)
                 {
-                    <a href="?category=@Model.CategoryId&page=1" class="c-pg__btn">1</a>
+                    <a href="?category=@Model.CategoryId&page=1" class="c-pg__btn d-inline-flex align-items-center justify-content-center">1</a>
                 }
                 @if (pgStart > 2)
                 {
@@ -149,7 +146,7 @@
                 @for (int p = pgStart; p <= pgEnd; p++)
                 {
                     string cls = p == Model.CurrentPage ? "c-pg__btn c-pg__btn--active" : "c-pg__btn";
-                    <a href="?category=@Model.CategoryId&page=@p" class="@cls">@p</a>
+                    <a href="?category=@Model.CategoryId&page=@p" class="@cls d-inline-flex align-items-center justify-content-center">@p</a>
                 }
 
                 @if (pgEnd < Model.TotalPages - 1)
@@ -158,16 +155,16 @@
                 }
                 @if (pgEnd < Model.TotalPages)
                 {
-                    <a href="?category=@Model.CategoryId&page=@Model.TotalPages" class="c-pg__btn">@Model.TotalPages</a>
+                    <a href="?category=@Model.CategoryId&page=@Model.TotalPages" class="c-pg__btn d-inline-flex align-items-center justify-content-center">@Model.TotalPages</a>
                 }
 
                 @if (Model.CurrentPage < Model.TotalPages)
                 {
-                    <a href="?category=@Model.CategoryId&page=@(Model.CurrentPage + 1)" class="c-pg__arrow" aria-label="Next page">&#8594;</a>
+                    <a href="?category=@Model.CategoryId&page=@(Model.CurrentPage + 1)" class="c-pg__arrow d-inline-flex align-items-center justify-content-center" aria-label="Next page">&#8594;</a>
                 }
                 else
                 {
-                    <span class="c-pg__arrow c-pg__arrow--disabled" aria-disabled="true">&#8594;</span>
+                    <span class="c-pg__arrow c-pg__arrow--disabled d-inline-flex align-items-center justify-content-center" aria-disabled="true">&#8594;</span>
                 }
             </nav>
         }

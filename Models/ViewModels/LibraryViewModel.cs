@@ -9,6 +9,8 @@ namespace Cassetted.Models.ViewModels
         public string Body { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public bool IsFavorited { get; set; }
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
+        public int FilledStars => (int)Math.Round(Rating);
     }
 
     public class LibraryViewModel

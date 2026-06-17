@@ -22,11 +22,11 @@ namespace Cassetted.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var userId = _userManager.GetUserId(User)!;
-            var viewModel = await _reviewService.GetReviewDetailsAsync(id, userId);
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
 
-            if (viewModel == null)
-                return NotFound();
+            var viewModel = await _reviewService.GetReviewDetailsAsync(id, userId);
+            if (viewModel == null) return NotFound();
 
             return View(viewModel);
         }
@@ -37,7 +37,9 @@ namespace Cassetted.Controllers
         {
             if (!string.IsNullOrWhiteSpace(body))
             {
-                var userId = _userManager.GetUserId(User)!;
+                var userId = _userManager.GetUserId(User);
+                if (userId == null) return Challenge();
+
                 await _reviewService.AddCommentAsync(reviewId, userId, body);
             }
 
@@ -47,7 +49,9 @@ namespace Cassetted.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var userId = _userManager.GetUserId(User)!;
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
             var viewModel = await _reviewService.GetReviewForEditAsync(id, userId);
             if (viewModel == null) return NotFound();
             return View(viewModel);
@@ -58,7 +62,8 @@ namespace Cassetted.Controllers
         [ActionName("Edit")]
         public async Task<IActionResult> EditPost(int id, EditReviewInputModel input)
         {
-            var userId = _userManager.GetUserId(User)!;
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
 
             if (!ModelState.IsValid)
             {
@@ -77,7 +82,9 @@ namespace Cassetted.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleLike(int reviewId)
         {
-            var userId = _userManager.GetUserId(User)!;
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
             var (liked, likeCount) = await _reviewService.ToggleLikeAsync(reviewId, userId);
             return Json(new { liked, likeCount });
         }
@@ -86,7 +93,9 @@ namespace Cassetted.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = _userManager.GetUserId(User)!;
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
             await _reviewService.DeleteReviewAsync(id, userId);
             return RedirectToAction("Index", "Feed");
         }
@@ -103,9 +112,10 @@ namespace Cassetted.Controllers
                 return Json(new { success = false, errors });
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            var (success, error) = await _reviewService.CreateReviewAsync(user!.Id, input);
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
 
+            var (success, error) = await _reviewService.CreateReviewAsync(userId, input);
             if (!success)
                 return Json(new { success = false, errors = new[] { error } });
 

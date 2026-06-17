@@ -41,19 +41,20 @@
   margin: 0;
 }
 
-/* ── Success banner ── */
+/* ── Success / error banner — layout via Bootstrap utilities in markup ── */
 .c-settings__saved {
   background: rgba(77, 196, 164, .12);
   border: 1px solid rgba(77, 196, 164, .3);
   border-radius: 12px;
-  padding: 0.75rem 1.1rem;
-  margin-bottom: 1.5rem;
   font-family: 'Outfit', sans-serif;
   font-size: 0.875rem;
   color: #4dc4a4;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+}
+
+.c-settings__saved--error {
+  background: rgba(255, 80, 80, .08);
+  border-color: rgba(255, 80, 80, .35);
+  color: rgba(255, 120, 120, .9);
 }
 
 /* ── Section card ── */

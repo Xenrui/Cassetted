@@ -21,7 +21,9 @@ namespace Cassetted.Controllers
 
         public async Task<IActionResult> Index(string? userId = null)
         {
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = _userManager.GetUserId(User);
+            if (currentUserId == null) return Challenge();
+
             var targetId = userId ?? currentUserId;
 
             var viewModel = await _profileService.GetProfileAsync(targetId, currentUserId);
@@ -103,7 +105,9 @@ namespace Cassetted.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Follow(string userId)
         {
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = _userManager.GetUserId(User);
+            if (currentUserId == null) return Challenge();
+
             if (currentUserId != userId)
                 await _profileService.FollowAsync(currentUserId, userId);
 
@@ -114,7 +118,9 @@ namespace Cassetted.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Unfollow(string userId)
         {
-            var currentUserId = _userManager.GetUserId(User)!;
+            var currentUserId = _userManager.GetUserId(User);
+            if (currentUserId == null) return Challenge();
+
             await _profileService.UnfollowAsync(currentUserId, userId);
 
             return RedirectToAction(nameof(Index), new { userId });

@@ -22,11 +22,11 @@ namespace Cassetted.Controllers
         public async Task<IActionResult> Index(string tab = "foryou")
         {
             var user = await _userManager.GetUserAsync(User);
-            var userId = user!.Id;
+            if (user == null) return Challenge();
 
             var reviews = tab == "friends"
-                ? await _feedService.GetFriendsFeedAsync(userId)
-                : await _feedService.GetForYouFeedAsync(userId);
+                ? await _feedService.GetFriendsFeedAsync(user.Id)
+                : await _feedService.GetForYouFeedAsync(user.Id);
 
             var trending = await _feedService.GetTrendingItemsAsync();
             var viewModel = new FeedViewModel

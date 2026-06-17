@@ -3,7 +3,7 @@
     ViewData["Title"] = Model.Name;
     ViewData["BodyClass"] = "cassetted-landing";
     ViewData["ActiveNav"] = "Browse";
-    var badgeClass = Model.CategoryName.ToLower().Replace(" ", "");
+    var badgeSlug = Model.CategoryName.ToLowerInvariant().Replace(" ", "");
     int reviewCount = Model.Reviews.Count;
 }
 
@@ -21,36 +21,36 @@
             </svg>
         </a>
         <p class="c-explore__breadcrumb mb-0">
-            <a asp-controller="Browse" asp-action="Index" style="color:inherit;text-decoration:none;">Browse</a>
-            &rsaquo; <a asp-controller="Browse" asp-action="Explore" style="color:inherit;text-decoration:none;">Explore</a>
+            <a asp-controller="Browse" asp-action="Index" class="text-reset text-decoration-none">Browse</a>
+            &rsaquo; <a asp-controller="Browse" asp-action="Explore" class="text-reset text-decoration-none">Explore</a>
             &rsaquo; @Model.Name
         </p>
     </div>
 
     <!-- ── Hero ── -->
     <div class="c-browse-item__hero">
-        <span class="c-badge c-badge--@badgeClass rounded-pill">@Model.CategoryName</span>
+        <span class="c-badge c-badge--@badgeSlug rounded-pill">@Model.CategoryName</span>
         <h1 class="c-browse-item__title">@Model.Name</h1>
 
-        <div class="c-browse-item__stats">
-            <div class="c-browse-item__stat">
-                <div class="c-browse-item__stat-num">
+        <div class="c-browse-item__stats d-flex align-items-center flex-wrap mb-4">
+            <div class="c-browse-item__stat d-flex flex-column gap-1">
+                <div class="c-browse-item__stat-num d-flex align-items-center gap-1">
                     <span class="c-browse-item__stat-star">&#9733;</span>
                     @Model.AverageRating.ToString("0.0")
                 </div>
                 <span class="c-browse-item__stat-label">Rating</span>
             </div>
-            <div class="c-browse-item__stat">
+            <div class="c-browse-item__stat d-flex flex-column gap-1">
                 <div class="c-browse-item__stat-num">@Model.ReviewCount</div>
                 <span class="c-browse-item__stat-label">Reviews</span>
             </div>
-            <div class="c-browse-item__stat">
+            <div class="c-browse-item__stat d-flex flex-column gap-1">
                 <div class="c-browse-item__stat-num">@Model.CommentCount</div>
                 <span class="c-browse-item__stat-label">Discussions</span>
             </div>
         </div>
 
-        <button class="c-browse-item__write-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+        <button class="c-browse-item__write-btn d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                 <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -65,7 +65,7 @@
     }
     else
     {
-        <h2 class="c-browse-item__reviews-heading">
+        <h2 class="c-browse-item__reviews-heading d-flex align-items-center gap-3">
             Community Reviews
             <span class="c-browse-item__reviews-count">@reviewCount</span>
         </h2>
@@ -74,8 +74,6 @@
         <div class="c-browse-community__reviews">
             @foreach (var review in Model.Reviews)
             {
-                var revBadgeClass = review.CategoryName.ToLower().Replace(" ", "");
-                int filled = (int)Math.Round(review.Rating);
                 <div class="c-review-card mb-3" data-href="@Url.Action("Details", "Review", new { id = review.Id })">
                     <div class="c-review-card__header d-flex align-items-start justify-content-between mb-2">
                         <div class="d-flex align-items-start gap-3">
@@ -87,16 +85,16 @@
                                 </svg>
                             </div>
                             <div class="d-flex flex-column">
-                                <div class="c-review-card__meta d-flex align-items-center">
+                                <div class="c-review-card__meta d-flex align-items-center gap-1">
                                     <a class="c-review-card__username" asp-controller="Profile" asp-action="Index" asp-route-userId="@review.UserId">@review.UserDisplayName</a>
                                     <span class="c-review-card__sep mx-1">·</span>
                                     <span class="c-review-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
                                 </div>
                                 <div class="c-stars mt-1">
-                                    @Html.Raw(new string('★', filled))
-                                    @if (filled < 5)
+                                    @Html.Raw(new string('★', review.FilledStars))
+                                    @if (review.FilledStars < 5)
                                     {
-                                        <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                        <span class="c-star--empty">@Html.Raw(new string('★', 5 - review.FilledStars))</span>
                                     }
                                 </div>
                             </div>
@@ -107,8 +105,8 @@
                         <h3 class="c-review-card__title">@review.Title</h3>
                     }
                     <p class="c-review-card__body">@review.Body</p>
-                    <div class="c-review-card__actions d-flex">
-                        <button class="c-action-btn d-inline-flex align-items-center gap-2" style="color:rgba(255,120,140,.65)">
+                    <div class="c-review-card__actions d-flex gap-1">
+                        <button class="c-action-btn c-like-btn--liked d-inline-flex align-items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>

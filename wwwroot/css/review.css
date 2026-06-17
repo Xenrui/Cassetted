@@ -12,7 +12,6 @@
   color: rgba(255, 255, 255, .55);
   text-decoration: none;
   transition: background .15s, color .15s;
-  margin-bottom: 1.25rem;
 }
 .c-post__back:hover { background: rgba(255, 255, 255, .08); color: #ffffff; }
 
@@ -61,11 +60,7 @@
   padding: 1rem 1.5rem 1.5rem;
 }
 
-.c-comment {
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-.c-comment:last-child { margin-bottom: 0; }
+.c-comment:last-child { margin-bottom: 0 !important; }
 
 .c-comment__avatar {
   width: 38px;
@@ -107,7 +102,6 @@ a.c-comment__username:hover { color: #4dc4a4; }
 .c-post-card__reply {
   padding: 0.85rem 1.5rem 1.25rem;
   border-top: 1px solid rgba(255, 255, 255, .06);
-  gap: 0.75rem;
 }
 
 .c-post-card__reply-input {
@@ -175,18 +169,13 @@ a.c-comment__username:hover { color: #4dc4a4; }
 .c-post-card__dropdown-delete:hover { color: #ff6b6b !important; }
 
 /* ── Edit review form ── */
-.c-edit-form { padding: 1.5rem; }
-
 .c-edit-form__item-name {
   font-family: 'Josefin Sans', sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 1.5rem;
   letter-spacing: .01em;
 }
-
-.c-edit-form__field { margin-bottom: 1.25rem; }
 
 .c-edit-form__label {
   font-family: 'Outfit', sans-serif;
@@ -195,11 +184,7 @@ a.c-comment__username:hover { color: #4dc4a4; }
   color: rgba(255, 255, 255, .4);
   text-transform: uppercase;
   letter-spacing: .07em;
-  display: block;
-  margin-bottom: 0.5rem;
 }
-
-.c-edit-stars { display: flex; gap: 0.2rem; margin-bottom: 0.25rem; }
 
 .c-edit-star {
   font-size: 1.6rem;
@@ -228,12 +213,6 @@ a.c-comment__username:hover { color: #4dc4a4; }
 .c-edit-form__textarea:focus { border-color: rgba(77, 196, 164, .45); }
 .c-edit-form__textarea::placeholder { color: rgba(255, 255, 255, .25); }
 
-.c-edit-form__field--check {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .c-edit-form__check-label {
   font-family: 'Outfit', sans-serif;
   font-size: 0.875rem;
@@ -242,12 +221,6 @@ a.c-comment__username:hover { color: #4dc4a4; }
 }
 
 .c-edit-form__actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
   border-top: 1px solid rgba(255, 255, 255, .06);
 }
 

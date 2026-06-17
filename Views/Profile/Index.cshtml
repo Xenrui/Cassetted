@@ -2,22 +2,6 @@
 @{
     ViewData["Title"] = $"{Model.DisplayName}'s Profile";
     ViewData["BodyClass"] = "cassetted-landing";
-
-    int maxActivity = Model.CategoryActivity.Count > 0 ? Model.CategoryActivity.Max(c => c.ReviewCount) : 1;
-
-    string CategoryBadgeClass(string name) => name.ToLower().Replace(" ", "");
-    string CategoryBarClass(string name) => name.ToLower().Replace(" ", "");
-
-    string CategoryColor(string name) => name switch
-    {
-        "Movies"   => "#ff9ab0",
-        "TV Shows" => "#ffb45a",
-        "Music"    => "#64beff",
-        "Books"    => "#50c8a0",
-        "Anime"    => "#ffd73c",
-        "Games"    => "#c490ff",
-        _          => "#4dc4a4"
-    };
 }
 
 @section Styles {
@@ -27,7 +11,7 @@
 <div class="c-profile">
 
     <!-- ── Header card ── -->
-    <div class="c-profile-header">
+    <div class="c-profile-header mb-4">
         <div class="d-flex align-items-start gap-4">
 
             <!-- Avatar -->
@@ -41,7 +25,7 @@
 
             <!-- Name, bio -->
             <div class="c-profile-header__info">
-                <div class="c-profile-header__name-row d-flex align-items-center">
+                <div class="c-profile-header__name-row d-flex align-items-center gap-2 mb-2">
                     <h1 class="c-profile-header__name">@Model.DisplayName</h1>
                     @if (Model.IsOwnProfile)
                     {
@@ -89,15 +73,15 @@
 
             <!-- Stats -->
             <div class="c-profile-header__stats d-flex align-items-start">
-                <div class="c-profile-stat">
+                <div class="c-profile-stat d-flex flex-column align-items-center gap-1">
                     <span class="c-profile-stat__num">@Model.ReviewCount</span>
                     <span class="c-profile-stat__label">Reviews</span>
                 </div>
-                <div class="c-profile-stat">
+                <div class="c-profile-stat d-flex flex-column align-items-center gap-1">
                     <span class="c-profile-stat__num">@Model.FollowingCount</span>
                     <span class="c-profile-stat__label">Following</span>
                 </div>
-                <div class="c-profile-stat">
+                <div class="c-profile-stat d-flex flex-column align-items-center gap-1">
                     <span class="c-profile-stat__num">@Model.FollowerCount</span>
                     <span class="c-profile-stat__label">Followers</span>
                 </div>
@@ -107,10 +91,10 @@
     </div>
 
     <!-- ── Insight cards ── -->
-    <div class="c-profile-insights">
+    <div class="c-profile-insights mb-4">
 
-        <div class="c-profile-insight">
-            <div class="c-profile-insight__value">
+        <div class="c-profile-insight d-flex flex-column align-items-start gap-1">
+            <div class="c-profile-insight__value d-flex align-items-center gap-2">
                 @if (Model.ReviewCount > 0)
                 {
                     <span>@Model.AverageRating.ToString("0.0")</span>
@@ -118,35 +102,36 @@
                 }
                 else
                 {
-                    <span style="font-size:1.1rem;color:rgba(255,255,255,.25)">—</span>
+                    <span class="c-profile-insight__empty">—</span>
                 }
             </div>
             <span class="c-profile-insight__label">Avg. Rate Given</span>
         </div>
 
-        <div class="c-profile-insight">
-            <div class="c-profile-insight__value c-profile-insight__value--category">
+        <div class="c-profile-insight d-flex flex-column align-items-start gap-1">
+            <div class="c-profile-insight__value c-profile-insight__value--category d-flex align-items-center gap-2">
                 @if (!string.IsNullOrEmpty(Model.MostReviewedCategory))
                 {
-                    <span style="color:@CategoryColor(Model.MostReviewedCategory)">@Model.MostReviewedCategory</span>
+                    var topSlug = Model.MostReviewedCategory.ToLowerInvariant().Replace(" ", "");
+                    <span class="c-profile-cat-color--@topSlug">@Model.MostReviewedCategory</span>
                 }
                 else
                 {
-                    <span style="font-size:1.1rem;color:rgba(255,255,255,.25)">—</span>
+                    <span class="c-profile-insight__empty">—</span>
                 }
             </div>
             <span class="c-profile-insight__label">Most Reviewed Category</span>
         </div>
 
-        <div class="c-profile-insight">
-            <div class="c-profile-insight__value" style="font-size:1.2rem;">
+        <div class="c-profile-insight d-flex flex-column align-items-start gap-1">
+            <div class="c-profile-insight__value fs-5 d-flex align-items-center gap-2">
                 @if (!string.IsNullOrEmpty(Model.HighestRatedItemName))
                 {
-                    <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">@Model.HighestRatedItemName</span>
+                    <span class="text-truncate d-block">@Model.HighestRatedItemName</span>
                 }
                 else
                 {
-                    <span style="font-size:1.1rem;color:rgba(255,255,255,.25)">—</span>
+                    <span class="c-profile-insight__empty">—</span>
                 }
             </div>
             <span class="c-profile-insight__label">Highest Rated Media</span>
@@ -156,7 +141,7 @@
 
     <!-- ── Activity by category ── -->
     <div class="c-profile-activity">
-        <h2 class="c-profile-activity__title">Activity by Category</h2>
+        <h2 class="c-profile-activity__title mb-4">Activity by Category</h2>
 
         @if (!Model.CategoryActivity.Any())
         {
@@ -164,18 +149,15 @@
         }
         else
         {
-            <div class="c-profile-activity__rows">
+            <div class="c-profile-activity__rows d-flex flex-column gap-3">
                 @foreach (var cat in Model.CategoryActivity)
                 {
-                    var barClass = CategoryBarClass(cat.CategoryName);
-                    var badgeClass = CategoryBadgeClass(cat.CategoryName);
-                    int pct = maxActivity > 0 ? (int)Math.Round((double)cat.ReviewCount / maxActivity * 100) : 0;
                     <div class="c-profile-activity__row">
-                        <span class="c-badge c-badge--@badgeClass rounded-pill">@cat.CategoryName</span>
+                        <span class="c-badge c-badge--@cat.BadgeSlug rounded-pill">@cat.CategoryName</span>
                         <div class="c-profile-bar">
-                            <div class="c-profile-bar__fill c-profile-bar__fill--@barClass" style="width:@pct%"></div>
+                            <div class="c-profile-bar__fill c-profile-bar__fill--@cat.BadgeSlug" style="width:@cat.ActivityPercent%"></div>
                         </div>
-                        <span class="c-profile-activity__count">@cat.ReviewCount review@(cat.ReviewCount != 1 ? "s" : "")</span>
+                        <span class="c-profile-activity__count text-end">@cat.ReviewCount review@(cat.ReviewCount != 1 ? "s" : "")</span>
                     </div>
                 }
             </div>

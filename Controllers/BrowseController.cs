@@ -8,12 +8,6 @@ namespace Cassetted.Controllers
     [Authorize]
     public class BrowseController : Controller
     {
-        private static readonly Dictionary<int, string> CategoryNames = new()
-        {
-            { 1, "Movies" }, { 2, "TV Shows" }, { 3, "Music" },
-            { 4, "Books" }, { 5, "Anime" }, { 6, "Games" }
-        };
-
         private const int PageSize = 10;
 
         private readonly BrowseService _browseService;
@@ -44,9 +38,12 @@ namespace Cassetted.Controllers
             var reviews = await _browseService.GetCommunityReviewsAsync(category, page, PageSize);
             var totalReviews = await _browseService.GetReviewCountAsync(category);
 
-            string heading = category.HasValue && CategoryNames.TryGetValue(category.Value, out var name)
-                ? name
-                : "Browse";
+            string heading = "Browse";
+            if (category.HasValue)
+            {
+                var name = await _browseService.GetCategoryNameAsync(category.Value);
+                if (name != null) heading = name;
+            }
 
             var viewModel = new BrowseViewModel
             {

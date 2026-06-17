@@ -12,7 +12,6 @@
   border: 1px solid rgba(255, 255, 255, .07);
   border-radius: 18px;
   padding: 2rem 2.25rem;
-  margin-bottom: 1.25rem;
 }
 
 .c-profile-header__avatar {
@@ -28,10 +27,6 @@
 
 .c-profile-header__info { flex: 1; min-width: 0; }
 
-.c-profile-header__name-row {
-  gap: 0.6rem;
-  margin-bottom: 0.5rem;
-}
 
 .c-profile-header__name {
   font-family: 'Josefin Sans', sans-serif;
@@ -80,10 +75,6 @@
 .c-profile-header__stats { gap: 2rem; flex-shrink: 0; }
 
 .c-profile-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
   min-width: 56px;
 }
 
@@ -113,9 +104,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: background .2s, border-color .2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -146,18 +134,26 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin-bottom: 1.25rem;
 }
+
+.c-profile-insight__empty {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, .25);
+}
+
+/* Per-category accent color for the "Most Reviewed Category" insight */
+.c-profile-cat-color--movies  { color: #ff9ab0; }
+.c-profile-cat-color--tvshows { color: #ffb45a; }
+.c-profile-cat-color--music   { color: #64beff; }
+.c-profile-cat-color--books   { color: #50c8a0; }
+.c-profile-cat-color--anime   { color: #ffd73c; }
+.c-profile-cat-color--games   { color: #c490ff; }
 
 .c-profile-insight {
   background: rgba(12, 35, 28, 0.72);
   border: 1px solid rgba(255, 255, 255, .07);
   border-radius: 16px;
   padding: 1.5rem 1.4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
 }
 
 .c-profile-insight__value {
@@ -166,9 +162,6 @@
   font-weight: 700;
   color: #ffffff;
   line-height: 1.1;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }
 
 .c-profile-insight__star { color: #f5c518; font-size: 1.4rem; }
@@ -200,11 +193,9 @@
   font-size: 1rem;
   font-weight: 600;
   color: rgba(255, 255, 255, .85);
-  margin: 0 0 1.25rem;
+  margin: 0;
   letter-spacing: 0.02em;
 }
-
-.c-profile-activity__rows { display: flex; flex-direction: column; gap: 0.85rem; }
 
 .c-profile-activity__row {
   display: grid;
@@ -217,7 +208,6 @@
   font-family: 'Outfit', sans-serif;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, .38);
-  text-align: right;
   white-space: nowrap;
 }
 

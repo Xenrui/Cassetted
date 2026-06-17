@@ -7,9 +7,6 @@ html { font-size: 14px; }
 
 body {
   margin-bottom: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus,
@@ -144,9 +141,6 @@ body {
   color: rgba(255, 255, 255, .75);
   padding: 0.55rem 0.85rem;
   border-radius: 9px;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
   text-decoration: none;
   transition: background .15s, color .15s;
   border: none;
@@ -250,12 +244,9 @@ body {
 
 .c-review-card__header { margin-bottom: 0.6rem; }
 
-.c-review-card__user { gap: 0.75rem; }
-
 .c-review-card__meta {
   font-family: 'Outfit', sans-serif;
   font-size: 0.85rem;
-  gap: 0.35rem;
 }
 
 .c-review-card__username { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
@@ -284,7 +275,6 @@ a.c-review-card__username:hover { color: #4dc4a4; }
 }
 
 .c-review-card__actions {
-  gap: 0.25rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 0.75rem;
 }

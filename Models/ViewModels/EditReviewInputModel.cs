@@ -21,5 +21,6 @@ namespace Cassetted.Models.ViewModels
         public string ItemName { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
         public EditReviewInputModel Input { get; set; } = new();
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
     }
 }

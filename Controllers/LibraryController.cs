@@ -21,7 +21,9 @@ namespace Cassetted.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var viewModel = await _libraryService.GetLibraryAsync(user!.Id, user.DisplayName);
+            if (user == null) return Challenge();
+
+            var viewModel = await _libraryService.GetLibraryAsync(user.Id, user.DisplayName);
             return View(viewModel);
         }
     }

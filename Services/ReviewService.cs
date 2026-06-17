@@ -17,6 +17,7 @@ namespace Cassetted.Services
         public async Task<ReviewDetailViewModel?> GetReviewDetailsAsync(int reviewId, string currentUserId)
         {
             return await _db.Reviews
+                .AsNoTracking()
                 .Where(r => r.Id == reviewId)
                 .Select(r => new ReviewDetailViewModel
                 {
@@ -78,6 +79,7 @@ namespace Cassetted.Services
         public async Task<EditReviewViewModel?> GetReviewForEditAsync(int reviewId, string userId)
         {
             return await _db.Reviews
+                .AsNoTracking()
                 .Where(r => r.Id == reviewId && r.UserId == userId)
                 .Select(r => new EditReviewViewModel
                 {

@@ -44,11 +44,10 @@
         <div class="c-explore__grid">
             @foreach (var item in Model.Items)
             {
-                var badgeClass = item.CategoryName.ToLower().Replace(" ", "");
                 <a class="c-item-card" asp-controller="Browse" asp-action="Item" asp-route-id="@item.Id">
-                    <span class="c-item-card__badge c-badge c-badge--@badgeClass rounded-pill">@item.CategoryName</span>
+                    <span class="c-item-card__badge c-badge c-badge--@item.BadgeSlug rounded-pill">@item.CategoryName</span>
                     <h3 class="c-item-card__title">@item.Name</h3>
-                    <div class="c-item-card__rating d-flex align-items-center">
+                    <div class="c-item-card__rating d-flex align-items-center gap-2 mb-2">
                         <span class="c-item-card__rating-star">&#9733;</span>
                         <span>@item.AverageRating.ToString("0.0")/5 Rating</span>
                     </div>

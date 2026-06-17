@@ -15,6 +15,8 @@ namespace Cassetted.Models.ViewModels
         public decimal AverageRating { get; set; }
         public int ReviewCount { get; set; }
         public int CommentCount { get; set; }
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
+        public int FilledStars => (int)Math.Round(AverageRating);
     }
 
     public class BrowseViewModel

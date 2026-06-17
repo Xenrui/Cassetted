@@ -19,7 +19,7 @@
     <!-- ── Banners ── -->
     @if (TempData["Saved"] != null)
     {
-        <div class="c-settings__saved" role="alert">
+        <div class="c-settings__saved d-flex align-items-center gap-2 py-2 px-3 mb-4" role="alert">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -28,7 +28,7 @@
     }
     @if (TempData["PasswordChanged"] != null)
     {
-        <div class="c-settings__saved" role="alert">
+        <div class="c-settings__saved d-flex align-items-center gap-2 py-2 px-3 mb-4" role="alert">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -39,7 +39,7 @@
     <!-- ── Validation summary ── -->
     @if (!ViewData.ModelState.IsValid)
     {
-        <div class="c-settings__saved" style="border-color:rgba(255,80,80,.35);background:rgba(255,80,80,.08);color:rgba(255,120,120,.9);" role="alert">
+        <div class="c-settings__saved c-settings__saved--error" role="alert">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8" />
                 <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />

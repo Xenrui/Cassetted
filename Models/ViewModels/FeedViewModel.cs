@@ -15,6 +15,8 @@ namespace Cassetted.Models.ViewModels
         public int LikeCount { get; set; }
         public int CommentCount { get; set; }
         public bool IsLikedByCurrentUser { get; set; }
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
+        public int FilledStars => (int)Math.Round(Rating);
     }
 
     public class TrendingItemViewModel
@@ -24,6 +26,8 @@ namespace Cassetted.Models.ViewModels
         public string CategoryName { get; set; } = string.Empty;
         public decimal AverageRating { get; set; }
         public int ReviewCount { get; set; }
+        public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
+        public int FilledStars => (int)Math.Round(AverageRating);
     }
 
     public class FeedViewModel

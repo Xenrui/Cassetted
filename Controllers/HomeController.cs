@@ -8,6 +8,9 @@ namespace Cassetted.Controllers
     {
         public IActionResult Index()
         {
+            if (User.Identity?.IsAuthenticated == true)
+                return RedirectToAction("Index", "Feed");
+
             return View();
         }
 

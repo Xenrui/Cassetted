@@ -16,7 +16,7 @@ namespace Cassetted.Services
 
         public async Task<List<FeedReviewViewModel>> GetForYouFeedAsync(string currentUserId)
         {
-            return await FeedQuery(_db.Reviews, currentUserId);
+            return await FeedQuery(_db.Reviews.Where(r => r.UserId != currentUserId), currentUserId);
         }
 
         public async Task<List<FeedReviewViewModel>> GetFriendsFeedAsync(string currentUserId)
@@ -26,7 +26,7 @@ namespace Cassetted.Services
                 .Select(f => f.FollowedId);
 
             return await FeedQuery(
-                _db.Reviews.Where(r => followedIds.Contains(r.UserId)),
+                _db.Reviews.Where(r => followedIds.Contains(r.UserId) && r.UserId != currentUserId),
                 currentUserId);
         }
 

@@ -23,7 +23,7 @@
             <div class="c-library__meta d-flex align-items-center gap-2">
                 <span>@reviewCount review@(reviewCount != 1 ? "s" : "")</span>
                 <span class="c-library__meta-sep">·</span>
-                <span>@favCount favorite@(favCount != 1 ? "s" : "")</span>
+                <span>@favCount saved</span>
             </div>
         </div>
         <button class="c-library__write-btn d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
@@ -67,7 +67,7 @@
             <div class="c-lib-track d-flex gap-3">
                 @foreach (var review in Model.RecentReviews)
                 {
-                    <div class="c-lib-card @(review.IsFavorited ? "c-lib-card--fav" : "")"
+                    <div class="c-lib-card"
                          data-href="@Url.Action("Details", "Review", new { id = review.Id })">
                         <span class="c-badge c-badge--@review.BadgeSlug rounded-pill c-lib-card__badge">@review.CategoryName</span>
                         <div class="c-lib-card__top">
@@ -86,9 +86,14 @@
                         <div class="c-lib-card__footer d-flex align-items-center justify-content-between">
                             <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
                             <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation()">
-                                @if (review.IsFavorited)
+                                @if (review.FavoriteCount > 0)
                                 {
-                                    <span class="c-lib-card__fav-icon">&#9733;</span>
+                                    <span class="c-lib-card__fav-meta d-inline-flex align-items-center gap-1" title="@review.FavoriteCount saved this">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+                                        </svg>
+                                        @review.FavoriteCount
+                                    </span>
                                 }
                                 <div class="dropdown">
                                     <button class="c-lib-card__menu-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">&#8942;</button>
@@ -110,10 +115,10 @@
         }
     </section>
 
-    <!-- ── Favorites ── -->
+    <!-- ── Saved (Favorites) ── -->
     <section class="c-lib-section mb-5">
         <div class="c-lib-section__heading d-flex align-items-center gap-3 mb-4">
-            <h2 class="c-lib-section__title">Favorites</h2>
+            <h2 class="c-lib-section__title">Saved</h2>
             @if (favCount > 0)
             {
                 <span class="c-lib-section__count">@favCount total</span>
@@ -126,50 +131,45 @@
             <div class="c-lib-empty">
                 <span class="c-lib-empty__icon">
                     <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
                     </svg>
                 </span>
-                <p class="c-lib-empty__text">No favorites yet.<br />Mark a review as a favorite when writing it.</p>
+                <p class="c-lib-empty__text">Nothing saved yet.<br />Tap the bookmark on any review you want to keep.</p>
             </div>
         }
         else
         {
             <div class="c-lib-track d-flex gap-3">
-                @foreach (var review in Model.Favorites)
+                @foreach (var fav in Model.Favorites)
                 {
                     <div class="c-lib-card c-lib-card--fav"
-                         data-href="@Url.Action("Details", "Review", new { id = review.Id })">
-                        <span class="c-badge c-badge--@review.BadgeSlug rounded-pill c-lib-card__badge">@review.CategoryName</span>
+                         data-href="@Url.Action("Details", "Review", new { id = fav.ReviewId })">
+                        <span class="c-badge c-badge--@fav.BadgeSlug rounded-pill c-lib-card__badge">@fav.CategoryName</span>
                         <div class="c-lib-card__top">
                             <div class="c-lib-card__stars">
-                                @Html.Raw(new string('★', review.FilledStars))
-                                @if (review.FilledStars < 5)
+                                @Html.Raw(new string('★', fav.FilledStars))
+                                @if (fav.FilledStars < 5)
                                 {
-                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - review.FilledStars))</span>
+                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - fav.FilledStars))</span>
                                 }
                             </div>
-                            <h3 class="c-lib-card__title">@review.ItemName</h3>
+                            <h3 class="c-lib-card__title">@fav.ItemName</h3>
+                            <a class="c-lib-card__author"
+                               asp-controller="Profile" asp-action="Index" asp-route-userId="@fav.AuthorUserId"
+                               onclick="event.stopPropagation()">
+                                by @fav.AuthorDisplayName
+                            </a>
                         </div>
                         <div class="c-lib-card__body-wrap">
-                            <p class="c-lib-card__body">@review.Body</p>
+                            <p class="c-lib-card__body">@fav.Body</p>
                         </div>
                         <div class="c-lib-card__footer d-flex align-items-center justify-content-between">
-                            <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
-                            <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation()">
-                                <span class="c-lib-card__fav-icon">&#9733;</span>
-                                <div class="dropdown">
-                                    <button class="c-lib-card__menu-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">&#8942;</button>
-                                    <ul class="dropdown-menu dropdown-menu-end c-post-card__dropdown">
-                                        <li><a class="dropdown-item" asp-controller="Review" asp-action="Edit" asp-route-id="@review.Id">Edit</a></li>
-                                        <li>
-                                            <form asp-controller="Review" asp-action="Delete" asp-route-id="@review.Id" method="post">
-                                                @Html.AntiForgeryToken()
-                                                <button type="submit" class="dropdown-item c-post-card__dropdown-delete">Delete</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <span class="c-lib-card__date">Saved @fav.SavedAt.ToString("MMM d, yyyy")</span>
+                            <span class="c-lib-card__fav-icon" aria-hidden="true">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+                                </svg>
+                            </span>
                         </div>
                     </div>
                 }

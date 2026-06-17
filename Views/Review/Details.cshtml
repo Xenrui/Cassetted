@@ -78,6 +78,13 @@
                     </svg>
                     Like<span class="c-like-count">@(Model.LikeCount > 0 ? $" · {Model.LikeCount}" : "")</span>
                 </button>
+                <button class="c-action-btn c-fav-btn d-inline-flex align-items-center gap-2 @(Model.IsFavoritedByCurrentUser ? "c-fav-btn--saved" : "")"
+                        data-review-id="@Model.Id">
+                    <svg class="c-fav-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="@(Model.IsFavoritedByCurrentUser ? "currentColor" : "none")">
+                        <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    </svg>
+                    Save<span class="c-fav-count">@(Model.FavoriteCount > 0 ? $" · {Model.FavoriteCount}" : "")</span>
+                </button>
                 <button class="c-action-btn d-inline-flex align-items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />

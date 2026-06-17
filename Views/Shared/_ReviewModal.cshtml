@@ -49,14 +49,6 @@
 
                     <p id="reviewError" class="text-danger small mb-0" aria-live="polite"></p>
 
-                    <input type="hidden" name="IsFavorited" id="reviewIsFavorited" value="false" />
-                    <button type="button" class="c-review-modal__fav-btn d-flex align-items-center justify-content-center gap-2" id="favBtn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                        </svg>
-                        Add to Favorites
-                    </button>
-
                     <button type="button" class="c-review-modal__post-btn" id="reviewPostBtn">POST</button>
 
                 </form>
@@ -82,15 +74,6 @@
                 paintStars(parseInt(ratingInput.value));
             });
         });
-
-        const favBtn = document.getElementById('favBtn');
-        const isFavoritedInput = document.getElementById('reviewIsFavorited');
-        if (favBtn) {
-            favBtn.addEventListener('click', function () {
-                this.classList.toggle('is-active');
-                isFavoritedInput.value = this.classList.contains('is-active') ? 'true' : 'false';
-            });
-        }
 
         document.getElementById('reviewPostBtn').addEventListener('click', async function () {
             const errorEl = document.getElementById('reviewError');
@@ -138,7 +121,6 @@
                 document.getElementById('reviewComments').value = '';
                 ratingInput.value = '0';
                 paintStars(0);
-                if (favBtn) { favBtn.classList.remove('is-active'); isFavoritedInput.value = 'false'; }
                 document.getElementById('reviewError').textContent = '';
             });
         }

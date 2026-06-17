@@ -45,11 +45,6 @@
                 <span class="text-danger field-validation-error">@Html.ValidationMessage("Body")</span>
             </div>
 
-            <div class="c-edit-form__field d-flex align-items-center gap-2 mb-4">
-                @Html.CheckBox("IsFavorited", Model.Input.IsFavorited, new { id = "editFavorited" })
-                <label for="editFavorited" class="c-edit-form__check-label">Mark as favorite</label>
-            </div>
-
             <div class="c-edit-form__actions d-flex justify-content-end align-items-center gap-3 mt-4 pt-4">
                 <a href="javascript:history.back()" class="c-edit-form__cancel">Cancel</a>
                 <button type="submit" class="c-edit-form__save">Save Changes</button>

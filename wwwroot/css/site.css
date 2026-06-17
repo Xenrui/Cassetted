@@ -303,3 +303,25 @@ a.c-review-card__username:hover { color: #4dc4a4; }
   color: rgba(255, 100, 130, .9) !important;
 }
 .c-like-btn__icon { transition: fill .15s; }
+
+/* ── Save (favorite) button ── */
+.c-fav-btn__icon {
+  transition: color .18s ease, transform .18s ease, fill .15s;
+  transform-origin: 50% 60%;
+}
+.c-fav-btn:hover .c-fav-btn__icon { color: rgba(245, 197, 24, .65); }
+
+.c-fav-btn--saved,
+.c-fav-btn--saved:hover,
+.c-fav-btn--saved:focus {
+  color: #f5c518 !important;
+}
+.c-fav-btn--saved .c-fav-btn__icon {
+  animation: c-fav-tuck .28s ease-out;
+}
+
+@keyframes c-fav-tuck {
+  0%   { transform: scale(1)    translateY(0); }
+  45%  { transform: scale(1.18) translateY(-1px); }
+  100% { transform: scale(1)    translateY(0); }
+}

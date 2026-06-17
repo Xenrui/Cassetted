@@ -106,11 +106,19 @@
                     }
                     <p class="c-review-card__body">@review.Body</p>
                     <div class="c-review-card__actions d-flex gap-1">
-                        <button class="c-action-btn c-like-btn--liked d-inline-flex align-items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <button class="c-action-btn c-like-btn d-inline-flex align-items-center gap-2 @(review.IsLikedByCurrentUser ? "c-like-btn--liked" : "")"
+                                data-review-id="@review.Id">
+                            <svg class="c-like-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="@(review.IsLikedByCurrentUser ? "currentColor" : "none")">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            Like@(review.LikeCount > 0 ? $" · {review.LikeCount}" : "")
+                            Like<span class="c-like-count">@(review.LikeCount > 0 ? $" · {review.LikeCount}" : "")</span>
+                        </button>
+                        <button class="c-action-btn c-fav-btn d-inline-flex align-items-center gap-2 @(review.IsFavoritedByCurrentUser ? "c-fav-btn--saved" : "")"
+                                data-review-id="@review.Id">
+                            <svg class="c-fav-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="@(review.IsFavoritedByCurrentUser ? "currentColor" : "none")">
+                                <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                            </svg>
+                            Save<span class="c-fav-count">@(review.FavoriteCount > 0 ? $" · {review.FavoriteCount}" : "")</span>
                         </button>
                         <button class="c-action-btn d-inline-flex align-items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">

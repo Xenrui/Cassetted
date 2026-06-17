@@ -231,22 +231,6 @@
   resize: vertical;
 }
 
-.c-review-modal__fav-btn {
-  height: 52px;
-  background: #28614f;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #000000;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 0.15rem;
-}
-.c-review-modal__fav-btn:hover { background: #336e5c; }
-.c-review-modal__fav-btn.is-active { background: #1e5243; color: #4dc4a4; }
-
 .c-review-modal__post-btn {
   height: 56px;
   background: #c4ece2;

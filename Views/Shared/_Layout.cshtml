@@ -11,37 +11,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Outfit:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Cassetted.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@(ViewData["BodyClass"])">
 
+    @{
+        var activeNav = ViewData["ActiveNav"]?.ToString() ?? "";
+    }
     <nav class="c-nav">
-        <div class="c-nav__inner">
-            <div class="c-nav__left">
+        <div class="c-nav__inner d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-4">
                 <a href="/" class="c-nav__logo-link">
                     <img src="~/images/logo.png" alt="Cassetted" class="c-nav__logo" />
                 </a>
-                <div class="c-nav__links">
-                    <a href="/Feed" class="c-nav__link">Feed</a>
-                    <div class="c-nav__dropdown-wrap">
-                        <a href="#" class="c-nav__link">
+                <div class="d-flex align-items-center gap-3">
+                    <a href="/Feed" class="c-nav__link @(activeNav == "Feed" ? "c-nav__link--active" : "")">Feed</a>
+                    <div class="position-relative">
+                        <a href="#" class="c-nav__link @(activeNav == "Browse" ? "c-nav__link--active" : "")">
                             Browse
                             <svg class="c-nav__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
                                 <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </a>
                     </div>
-                    <a href="/Library" class="c-nav__link">Library</a>
+                    <a href="/Library" class="c-nav__link @(activeNav == "Library" ? "c-nav__link--active" : "")">Library</a>
                 </div>
             </div>
-            <div class="c-nav__right">
-                <div class="c-nav__search">
+            <div class="d-flex align-items-center gap-2">
+                <div class="c-nav__search d-flex align-items-center gap-2">
                     <svg class="c-nav__search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none">
                         <circle cx="6.5" cy="6.5" r="4.5" stroke="#999" stroke-width="1.5" />
                         <path d="M10.5 10.5l3 3" stroke="#999" stroke-width="1.5" stroke-linecap="round" />
                     </svg>
                     <input type="search" class="c-nav__search-input" placeholder="Search titles, users, reviews..." />
                 </div>
-                <a href="/Identity/Account/Login" class="c-nav__user-btn" aria-label="Account">
+                <a href="/Identity/Account/Login" class="c-nav__user-btn d-flex align-items-center justify-content-center" aria-label="Account">
                     <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="8" r="4" stroke="#2a2a2a" stroke-width="1.8" />
                         <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="#2a2a2a" stroke-width="1.8" stroke-linecap="round" />
@@ -54,7 +58,7 @@
     @RenderBody()
 
     <footer class="c-footer">
-        <div class="container">
+        <div class="container text-center">
             &copy; 2026 Cassetted &mdash; <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>

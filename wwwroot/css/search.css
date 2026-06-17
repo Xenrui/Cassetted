@@ -1,0 +1,61 @@
+.c-search {
+  padding: 2.5rem 2rem 5rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.c-search__heading {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2rem;
+  letter-spacing: 0.01em;
+}
+
+.c-search__query { color: #4dc4a4; }
+
+.c-search__section-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.c-search__items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.c-search__user-row {
+  background: rgba(15, 38, 32, .6);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 12px;
+  padding: .85rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s, border-color .15s;
+}
+.c-search__user-row:hover {
+  background: rgba(22, 55, 46, .8);
+  border-color: rgba(77, 196, 164, .35);
+  color: inherit;
+  text-decoration: none;
+}
+
+.c-search__user-name {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.c-search__user-meta {
+  font-family: 'Outfit', sans-serif;
+  font-size: .78rem;
+  color: rgba(255, 255, 255, .38);
+}

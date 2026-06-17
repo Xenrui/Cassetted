@@ -41,13 +41,16 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <div class="c-nav__search d-flex align-items-center gap-2">
+                <form asp-controller="Search" asp-action="Index" method="get"
+                      class="c-nav__search d-flex align-items-center gap-2">
                     <svg class="c-nav__search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none">
                         <circle cx="6.5" cy="6.5" r="4.5" stroke="#999" stroke-width="1.5" />
                         <path d="M10.5 10.5l3 3" stroke="#999" stroke-width="1.5" stroke-linecap="round" />
                     </svg>
-                    <input type="search" class="c-nav__search-input" placeholder="Search titles, users, reviews..." />
-                </div>
+                    <input type="search" name="q" class="c-nav__search-input"
+                           placeholder="Search titles, users, reviews..." autocomplete="off"
+                           value="@Context.Request.Query["q"]" />
+                </form>
                 @if (SignInManager.IsSignedIn(User))
                 {
                     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

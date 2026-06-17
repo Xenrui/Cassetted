@@ -1,0 +1,84 @@
+@model SearchViewModel
+@{
+    ViewData["Title"] = string.IsNullOrWhiteSpace(Model.Query) ? "Search" : $"Search: {Model.Query}";
+    ViewData["BodyClass"] = "cassetted-landing";
+    bool tooShort = string.IsNullOrWhiteSpace(Model.Query) || Model.Query.Trim().Length < 2;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/search.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/browse.css" asp-append-version="true" />
+}
+
+<div class="c-search">
+
+    <h1 class="c-search__heading">
+        @if (tooShort)
+        {
+            <text>Search</text>
+        }
+        else
+        {
+            <text>Results for "<span class="c-search__query">@Model.Query</span>"</text>
+        }
+    </h1>
+
+    @if (tooShort)
+    {
+        <p class="text-muted">Type at least 2 characters in the search bar above.</p>
+    }
+    else if (!Model.HasResults)
+    {
+        <p class="text-muted">No matches for "@Model.Query".</p>
+    }
+    else
+    {
+        @if (Model.Items.Any())
+        {
+            <section class="c-search__section mb-5">
+                <h2 class="c-search__section-title mb-3">Items</h2>
+                <div class="c-search__items-grid">
+                    @foreach (var item in Model.Items)
+                    {
+                        <a class="c-item-card" asp-controller="Browse" asp-action="Item" asp-route-id="@item.Id">
+                            <span class="c-item-card__badge c-badge c-badge--@item.BadgeSlug rounded-pill">@item.CategoryName</span>
+                            <h3 class="c-item-card__title">@item.Name</h3>
+                            <div class="c-item-card__rating d-flex align-items-center gap-2 mb-2">
+                                <span class="c-item-card__rating-star">&#9733;</span>
+                                <span>@item.AverageRating.ToString("0.0")/5</span>
+                            </div>
+                            <div class="c-item-card__stats">@item.ReviewCount review@(item.ReviewCount != 1 ? "s" : "")</div>
+                        </a>
+                    }
+                </div>
+            </section>
+        }
+
+        @if (Model.Users.Any())
+        {
+            <section class="c-search__section">
+                <h2 class="c-search__section-title mb-3">Users</h2>
+                <div class="d-flex flex-column gap-2">
+                    @foreach (var u in Model.Users)
+                    {
+                        <a class="c-search__user-row d-flex align-items-center gap-3"
+                           asp-controller="Profile" asp-action="Index" asp-route-userId="@u.UserId">
+                            <div class="c-avatar c-avatar--sm flex-shrink-0">
+                                <svg viewBox="0 0 40 40" fill="none">
+                                    <circle cx="20" cy="20" r="20" fill="#2a5045" />
+                                    <circle cx="20" cy="15" r="6" fill="#3d7060" />
+                                    <path d="M7 36c0-7 5.8-12 13-12s13 5 13 12" fill="#3d7060" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="c-search__user-name">@u.DisplayName</div>
+                                <div class="c-search__user-meta">@u.ReviewCount review@(u.ReviewCount != 1 ? "s" : "")</div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </section>
+        }
+    }
+
+</div>

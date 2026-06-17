@@ -206,6 +206,56 @@
   outline: none;
 }
 
+/* ── Title typeahead ── */
+.c-review-modal__suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #11332b;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+.c-review-modal__suggestion {
+  padding: .55rem .75rem;
+  border-radius: 7px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, .85);
+  font-family: 'Outfit', sans-serif;
+  font-size: .9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+}
+.c-review-modal__suggestion:hover,
+.c-review-modal__suggestion.is-active {
+  background: rgba(77, 196, 164, .14);
+  color: #ffffff;
+}
+.c-review-modal__suggestion__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.c-review-modal__suggestion__meta {
+  font-size: .75rem;
+  color: rgba(255, 255, 255, .4);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.c-review-modal__hint {
+  font-family: 'Outfit', sans-serif;
+  font-size: .78rem;
+  color: rgba(77, 196, 164, .85);
+}
+.c-review-modal__hint--error { color: rgba(255, 120, 120, .85); }
+
 
 .c-review-modal__star {
   font-size: 2rem;

@@ -25,9 +25,12 @@
                         </select>
                     </div>
 
-                    <div class="c-review-modal__field d-flex flex-column gap-2">
-                        <label class="c-review-modal__label">Title</label>
-                        <input type="text" class="c-review-modal__input" id="reviewTitle" name="ItemName" />
+                    <div class="c-review-modal__field d-flex flex-column gap-2 position-relative">
+                        <label class="c-review-modal__label" for="reviewTitle">Title</label>
+                        <input type="text" class="c-review-modal__input" id="reviewTitle" name="ItemName" autocomplete="off" />
+                        <input type="hidden" id="reviewItemId" name="ItemId" />
+                        <ul class="c-review-modal__suggestions" id="reviewSuggestions" role="listbox" hidden></ul>
+                        <span class="c-review-modal__hint" id="reviewTitleHint" hidden></span>
                     </div>
 
                     <div class="c-review-modal__field d-flex flex-column gap-2">
@@ -61,6 +64,11 @@
     (function () {
         const stars = document.querySelectorAll('.c-review-modal__star');
         const ratingInput = document.getElementById('reviewRating');
+        const categorySel = document.getElementById('reviewCategory');
+        const titleInput = document.getElementById('reviewTitle');
+        const itemIdInput = document.getElementById('reviewItemId');
+        const suggestionsList = document.getElementById('reviewSuggestions');
+        const hintEl = document.getElementById('reviewTitleHint');
 
         function paintStars(val) {
             stars.forEach(s => s.classList.toggle('is-active', parseInt(s.dataset.value) <= val));
@@ -73,6 +81,83 @@
                 ratingInput.value = star.dataset.value;
                 paintStars(parseInt(ratingInput.value));
             });
+        });
+
+        // ── Typeahead ──
+        let abortCtrl = null;
+        let debounceTimer = null;
+
+        function showHint(text, isError) {
+            if (!text) { hintEl.hidden = true; hintEl.textContent = ''; return; }
+            hintEl.hidden = false;
+            hintEl.textContent = text;
+            hintEl.classList.toggle('c-review-modal__hint--error', !!isError);
+        }
+
+        function hideSuggestions() {
+            suggestionsList.hidden = true;
+            suggestionsList.innerHTML = '';
+        }
+
+        function renderSuggestions(items) {
+            if (!items.length) { hideSuggestions(); return; }
+            suggestionsList.innerHTML = items.map(it => {
+                const meta = `${it.reviewCount} review${it.reviewCount === 1 ? '' : 's'} · ★ ${it.averageRating.toFixed(1)}`;
+                return `<li class="c-review-modal__suggestion" data-id="${it.id}" data-name="${it.name.replace(/"/g, '&quot;')}">
+                    <span class="c-review-modal__suggestion__name">${escapeHtml(it.name)}</span>
+                    <span class="c-review-modal__suggestion__meta">${meta}</span>
+                </li>`;
+            }).join('');
+            suggestionsList.hidden = false;
+        }
+
+        function escapeHtml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        async function fetchSuggestions(categoryId, q) {
+            if (abortCtrl) abortCtrl.abort();
+            abortCtrl = new AbortController();
+            try {
+                const url = `/Review/SearchItems?categoryId=${encodeURIComponent(categoryId)}&q=${encodeURIComponent(q)}`;
+                const res = await fetch(url, { signal: abortCtrl.signal });
+                if (!res.ok) return;
+                const items = await res.json();
+                renderSuggestions(items);
+            } catch (e) {
+                if (e.name !== 'AbortError') hideSuggestions();
+            }
+        }
+
+        titleInput.addEventListener('input', () => {
+            itemIdInput.value = '';
+            showHint('');
+            const q = titleInput.value.trim();
+            const categoryId = categorySel.value;
+            if (!categoryId) { showHint('Pick a category first.'); hideSuggestions(); return; }
+            if (q.length < 2) { hideSuggestions(); return; }
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => fetchSuggestions(categoryId, q), 220);
+        });
+
+        suggestionsList.addEventListener('click', e => {
+            const li = e.target.closest('.c-review-modal__suggestion');
+            if (!li) return;
+            titleInput.value = li.dataset.name;
+            itemIdInput.value = li.dataset.id;
+            hideSuggestions();
+            showHint('Linked to an existing item.');
+        });
+
+        categorySel.addEventListener('change', () => {
+            itemIdInput.value = '';
+            hideSuggestions();
+            showHint('');
+        });
+
+        document.addEventListener('click', e => {
+            if (e.target === titleInput || suggestionsList.contains(e.target)) return;
+            hideSuggestions();
         });
 
         document.getElementById('reviewPostBtn').addEventListener('click', async function () {
@@ -116,11 +201,14 @@
         const reviewModal = document.getElementById('reviewModal');
         if (reviewModal) {
             reviewModal.addEventListener('hidden.bs.modal', function () {
-                document.getElementById('reviewCategory').value = '';
-                document.getElementById('reviewTitle').value = '';
+                categorySel.value = '';
+                titleInput.value = '';
+                itemIdInput.value = '';
                 document.getElementById('reviewComments').value = '';
                 ratingInput.value = '0';
                 paintStars(0);
+                hideSuggestions();
+                showHint('');
                 document.getElementById('reviewError').textContent = '';
             });
         }

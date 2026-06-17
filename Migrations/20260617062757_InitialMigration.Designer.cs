@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Cassetted.Data.Migrations
+namespace Cassetted.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260616182132_AddApplicationEntities")]
-    partial class AddApplicationEntities
+    [Migration("20260617062757_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

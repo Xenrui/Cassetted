@@ -1,0 +1,157 @@
+@model LibraryViewModel
+@{
+    ViewData["Title"] = $"{Model.UserDisplayName}'s Library";
+    ViewData["BodyClass"] = "cassetted-landing";
+    ViewData["ActiveNav"] = "Library";
+    int reviewCount = Model.RecentReviews.Count;
+    int favCount = Model.Favorites.Count;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/library.css" asp-append-version="true" />
+}
+
+<div class="c-library">
+
+    <!-- ── Header ── -->
+    <div class="c-library__header">
+        <div>
+            <h1 class="c-library__username">
+                <span class="c-library__username-accent">@Model.UserDisplayName</span>'s Library
+            </h1>
+            <div class="c-library__meta">
+                <span>@reviewCount review@(reviewCount != 1 ? "s" : "")</span>
+                <span class="c-library__meta-sep">·</span>
+                <span>@favCount favorite@(favCount != 1 ? "s" : "")</span>
+            </div>
+        </div>
+        <button class="c-library__write-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            Write a Review
+        </button>
+    </div>
+
+    <!-- ── Recent Reviews ── -->
+    <section class="c-lib-section">
+        <div class="c-lib-section__heading d-flex align-items-center gap-3">
+            <h2 class="c-lib-section__title">Recent Reviews</h2>
+            @if (reviewCount > 0)
+            {
+                <span class="c-lib-section__count">@reviewCount total</span>
+            }
+            <div class="c-lib-section__line"></div>
+        </div>
+
+        @if (!Model.RecentReviews.Any())
+        {
+            <div class="c-lib-empty">
+                <span class="c-lib-empty__icon">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+                <p class="c-lib-empty__text">You haven't reviewed anything yet.<br />Start building your collection.</p>
+                <button class="c-lib-empty__btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    Write your first review
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="c-lib-track">
+                @foreach (var review in Model.RecentReviews)
+                {
+                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
+                    int filled = (int)Math.Round(review.Rating);
+                    <a class="c-lib-card @(review.IsFavorited ? "c-lib-card--fav" : "")"
+                       asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">
+                        <span class="c-badge c-badge--@badgeClass rounded-pill c-lib-card__badge">@review.CategoryName</span>
+                        <div class="c-lib-card__top">
+                            <div class="c-lib-card__stars">
+                                @Html.Raw(new string('★', filled))
+                                @if (filled < 5)
+                                {
+                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                }
+                            </div>
+                            <h3 class="c-lib-card__title">@review.ItemName</h3>
+                        </div>
+                        <div class="c-lib-card__body-wrap">
+                            <p class="c-lib-card__body">@review.Body</p>
+                        </div>
+                        <div class="c-lib-card__footer">
+                            <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
+                            @if (review.IsFavorited)
+                            {
+                                <span class="c-lib-card__fav-icon">&#9733;</span>
+                            }
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- ── Favorites ── -->
+    <section class="c-lib-section">
+        <div class="c-lib-section__heading d-flex align-items-center gap-3">
+            <h2 class="c-lib-section__title">Favorites</h2>
+            @if (favCount > 0)
+            {
+                <span class="c-lib-section__count">@favCount total</span>
+            }
+            <div class="c-lib-section__line"></div>
+        </div>
+
+        @if (!Model.Favorites.Any())
+        {
+            <div class="c-lib-empty">
+                <span class="c-lib-empty__icon">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+                <p class="c-lib-empty__text">No favorites yet.<br />Mark a review as a favorite when writing it.</p>
+            </div>
+        }
+        else
+        {
+            <div class="c-lib-track">
+                @foreach (var review in Model.Favorites)
+                {
+                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
+                    int filled = (int)Math.Round(review.Rating);
+                    <a class="c-lib-card c-lib-card--fav"
+                       asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">
+                        <span class="c-badge c-badge--@badgeClass rounded-pill c-lib-card__badge">@review.CategoryName</span>
+                        <div class="c-lib-card__top">
+                            <div class="c-lib-card__stars">
+                                @Html.Raw(new string('★', filled))
+                                @if (filled < 5)
+                                {
+                                    <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                }
+                            </div>
+                            <h3 class="c-lib-card__title">@review.ItemName</h3>
+                        </div>
+                        <div class="c-lib-card__body-wrap">
+                            <p class="c-lib-card__body">@review.Body</p>
+                        </div>
+                        <div class="c-lib-card__footer">
+                            <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
+                            <span class="c-lib-card__fav-icon">&#9733;</span>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+
+</div>
+
+<partial name="_ReviewModal" />

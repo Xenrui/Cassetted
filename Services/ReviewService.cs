@@ -87,7 +87,8 @@ namespace Cassetted.Services
                 UserId = userId,
                 ItemId = item.Id,
                 Rating = input.Rating,
-                Body = input.Body.Trim()
+                Body = input.Body.Trim(),
+                IsFavorited = input.IsFavorited
             });
             await _db.SaveChangesAsync();
 

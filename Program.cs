@@ -25,6 +25,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 builder.Services.AddScoped<Cassetted.Services.FeedService>();
 builder.Services.AddScoped<Cassetted.Services.ReviewService>();
 builder.Services.AddScoped<Cassetted.Services.BrowseService>();
+builder.Services.AddScoped<Cassetted.Services.LibraryService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

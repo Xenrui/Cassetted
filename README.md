@@ -43,13 +43,3 @@ Areas/Identity/      Customised login and registration pages
 wwwroot/             Static assets
 ```
 
-## Current State
-
-| Feature | Status |
-|---------|--------|
-| Auth (login, register) | Done |
-| Activity feed | Done |
-| Items & Reviews | In progress |
-| Social (follow, likes, comments) | Pending |
-| Search | Pending |
-| Profile pages | Pending |

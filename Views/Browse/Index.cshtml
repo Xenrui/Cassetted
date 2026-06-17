@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="c-review-card__meta d-flex align-items-center">
-                                        <span class="c-review-card__username">@review.UserDisplayName</span>
+                                        <a class="c-review-card__username" asp-controller="Profile" asp-action="Index" asp-route-userId="@review.UserId">@review.UserDisplayName</a>
                                         <span class="c-review-card__sep mx-1">·</span>
                                         <span class="c-review-card__date">@review.CreatedAt.ToString("MM/dd/yyyy")</span>
                                     </div>

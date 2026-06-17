@@ -22,6 +22,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequiredUniqueChars = 1;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddScoped<Cassetted.Services.FeedService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

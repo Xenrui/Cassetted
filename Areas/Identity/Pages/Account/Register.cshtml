@@ -1,72 +1,88 @@
-﻿@page
+@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Sign Up";
+    ViewData["BodyClass"] = "cassetted-landing";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="auth-page">
+    <div class="auth-card auth-card--register">
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.DisplayName" class="form-control" autocomplete="nickname" aria-required="true" placeholder="Your display name" />
-                <label asp-for="Input.DisplayName">Display Name</label>
-                <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+        <a href="/" class="auth-back" aria-label="Back to home">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+
+        <h1 class="auth-title">Ready to hit record?</h1>
+        <p class="auth-subtitle">Join Cassetted to track what you watch, play, read, and listen to&mdash;all in one place.</p>
+
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="auth-form">
+            <div asp-validation-summary="ModelOnly" class="auth-error" role="alert"></div>
+
+            <div class="auth-field">
+                <label asp-for="Input.DisplayName" class="auth-label">Username</label>
+                <div class="auth-input-wrap">
+                    <input asp-for="Input.DisplayName" class="auth-input"
+                           autocomplete="nickname" aria-required="true" placeholder="e.g. mixtape_fan" />
+                </div>
+                <span asp-validation-for="Input.DisplayName" class="auth-field-error"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+            <div class="auth-field">
+                <label asp-for="Input.Email" class="auth-label">Email</label>
+                <div class="auth-input-wrap">
+                    <input asp-for="Input.Email" class="auth-input"
+                           autocomplete="username" aria-required="true" placeholder="you@example.com" />
+                </div>
+                <span asp-validation-for="Input.Email" class="auth-field-error"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <div class="auth-field">
+                <label asp-for="Input.Password" class="auth-label">Password</label>
+                <div class="auth-input-wrap">
+                    <input asp-for="Input.Password" type="password" id="regPwd"
+                           class="auth-input has-icon-r"
+                           autocomplete="new-password" aria-required="true" placeholder="Min. 6 characters" />
+                    <button type="button" class="auth-icon-right" onclick="togglePwd('regPwd')" aria-label="Toggle password visibility">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="1.8" />
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" />
+                        </svg>
+                    </button>
+                </div>
+                <span asp-validation-for="Input.Password" class="auth-field-error"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+            <div class="auth-field">
+                <label asp-for="Input.ConfirmPassword" class="auth-label">Repeat Password</label>
+                <div class="auth-input-wrap">
+                    <input asp-for="Input.ConfirmPassword" type="password" id="regPwdConfirm"
+                           class="auth-input has-icon-r"
+                           autocomplete="new-password" aria-required="true" placeholder="Repeat password" />
+                    <button type="button" class="auth-icon-right" onclick="togglePwd('regPwdConfirm')" aria-label="Toggle password visibility">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="1.8" />
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" />
+                        </svg>
+                    </button>
+                </div>
+                <span asp-validation-for="Input.ConfirmPassword" class="auth-field-error"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+
+            <button type="submit" class="auth-submit">Sign Up</button>
         </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+
+        <p class="auth-switch">Already have an account? <a asp-page="./Login">Log In</a></p>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePwd(id) {
+            var inp = document.getElementById(id);
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        }
+    </script>
 }

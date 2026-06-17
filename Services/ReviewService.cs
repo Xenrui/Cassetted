@@ -59,6 +59,64 @@ namespace Cassetted.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task<(bool Liked, int LikeCount)> ToggleLikeAsync(int reviewId, string userId)
+        {
+            var like = await _db.ReviewLikes
+                .FirstOrDefaultAsync(l => l.ReviewId == reviewId && l.UserId == userId);
+
+            if (like != null)
+                _db.ReviewLikes.Remove(like);
+            else
+                _db.ReviewLikes.Add(new ReviewLike { ReviewId = reviewId, UserId = userId });
+
+            await _db.SaveChangesAsync();
+
+            var likeCount = await _db.ReviewLikes.CountAsync(l => l.ReviewId == reviewId);
+            return (like == null, likeCount);
+        }
+
+        public async Task<EditReviewViewModel?> GetReviewForEditAsync(int reviewId, string userId)
+        {
+            return await _db.Reviews
+                .Where(r => r.Id == reviewId && r.UserId == userId)
+                .Select(r => new EditReviewViewModel
+                {
+                    ReviewId = r.Id,
+                    ItemName = r.Item.Name,
+                    CategoryName = r.Item.Category.Name,
+                    Input = new EditReviewInputModel
+                    {
+                        Rating = (int)r.Rating,
+                        Body = r.Body,
+                        IsFavorited = r.IsFavorited
+                    }
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateReviewAsync(int reviewId, string userId, EditReviewInputModel input)
+        {
+            var review = await _db.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId && r.UserId == userId);
+            if (review == null) return false;
+
+            review.Rating = input.Rating;
+            review.Body = input.Body.Trim();
+            review.IsFavorited = input.IsFavorited;
+            review.UpdatedAt = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteReviewAsync(int reviewId, string userId)
+        {
+            var review = await _db.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId && r.UserId == userId);
+            if (review == null) return false;
+
+            _db.Reviews.Remove(review);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<(bool Success, string? Error)> CreateReviewAsync(string userId, CreateReviewInputModel input)
         {
             var itemName = input.ItemName.Trim();

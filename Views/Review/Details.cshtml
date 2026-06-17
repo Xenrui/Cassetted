@@ -4,7 +4,6 @@
     ViewData["BodyClass"] = "cassetted-landing";
     var badgeClass = Model.CategoryName.ToLower().Replace(" ", "");
     int filled = (int)Math.Round(Model.Rating);
-    string likeStyle = Model.IsLikedByCurrentUser ? "color:rgba(255,120,140,.9)" : "";
 }
 
 @section Styles {
@@ -37,7 +36,7 @@
                     </div>
                     <div class="d-flex flex-column">
                         <div class="c-review-card__meta d-flex align-items-center">
-                            <span class="c-review-card__username">@Model.UserDisplayName</span>
+                            <a class="c-review-card__username" asp-controller="Profile" asp-action="Index" asp-route-userId="@Model.UserId">@Model.UserDisplayName</a>
                             <span class="c-review-card__sep mx-1">·</span>
                             <span class="c-review-card__date">@Model.CreatedAt.ToString("MM/dd/yyyy")</span>
                         </div>
@@ -52,7 +51,21 @@
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <span class="c-badge c-badge--@badgeClass rounded-pill">@Model.CategoryName</span>
-                    <button class="c-post-card__menu" aria-label="Options">&#8942;</button>
+                    @if (Model.IsOwnReview)
+                    {
+                        <div class="dropdown">
+                            <button class="c-post-card__menu" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">&#8942;</button>
+                            <ul class="dropdown-menu dropdown-menu-end c-post-card__dropdown">
+                                <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.Id">Edit</a></li>
+                                <li>
+                                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="dropdown-item c-post-card__dropdown-delete">Delete</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -60,11 +73,12 @@
             <p class="c-review-card__body">@Model.Body</p>
 
             <div class="c-review-card__actions d-flex">
-                <button class="c-action-btn d-inline-flex align-items-center gap-2" style="@likeStyle">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <button class="c-action-btn c-like-btn d-inline-flex align-items-center gap-2 @(Model.IsLikedByCurrentUser ? "c-like-btn--liked" : "")"
+                        data-review-id="@Model.Id">
+                    <svg class="c-like-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="@(Model.IsLikedByCurrentUser ? "currentColor" : "none")">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    Like@(Model.LikeCount > 0 ? $" · {Model.LikeCount}" : "")
+                    Like<span class="c-like-count">@(Model.LikeCount > 0 ? $" · {Model.LikeCount}" : "")</span>
                 </button>
                 <button class="c-action-btn d-inline-flex align-items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -94,7 +108,7 @@
                             </svg>
                         </div>
                         <div class="c-comment__bubble">
-                            <div class="c-comment__username">@comment.UserDisplayName</div>
+                            <a class="c-comment__username" asp-controller="Profile" asp-action="Index" asp-route-userId="@comment.UserId">@comment.UserDisplayName</a>
                             <p class="c-comment__body">@comment.Body</p>
                         </div>
                     </div>

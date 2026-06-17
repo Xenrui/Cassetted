@@ -90,7 +90,10 @@
   font-weight: 600;
   color: rgba(255, 255, 255, .9);
   margin-bottom: 0.2rem;
+  display: block;
 }
+a.c-comment__username { text-decoration: none; transition: color .15s; }
+a.c-comment__username:hover { color: #4dc4a4; }
 
 .c-comment__body {
   font-family: 'Outfit', sans-serif;
@@ -138,3 +141,140 @@
   white-space: nowrap;
 }
 .c-post-card__reply-btn:hover { background: #337a68; }
+
+/* ── Options dropdown ── */
+.c-post-card__dropdown {
+  background: #0d2820;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 10px;
+  padding: 0.3rem;
+  min-width: 130px;
+}
+
+.c-post-card__dropdown .dropdown-item {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, .75);
+  border-radius: 7px;
+  padding: 0.45rem 0.85rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  display: block;
+  cursor: pointer;
+}
+
+.c-post-card__dropdown .dropdown-item:hover,
+.c-post-card__dropdown .dropdown-item:focus {
+  background: rgba(255, 255, 255, .07);
+  color: #fff;
+}
+
+.c-post-card__dropdown-delete { color: rgba(255, 110, 110, .85) !important; }
+.c-post-card__dropdown-delete:hover { color: #ff6b6b !important; }
+
+/* ── Edit review form ── */
+.c-edit-form { padding: 1.5rem; }
+
+.c-edit-form__item-name {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  letter-spacing: .01em;
+}
+
+.c-edit-form__field { margin-bottom: 1.25rem; }
+
+.c-edit-form__label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .4);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.c-edit-stars { display: flex; gap: 0.2rem; margin-bottom: 0.25rem; }
+
+.c-edit-star {
+  font-size: 1.6rem;
+  color: rgba(245, 197, 24, .2);
+  cursor: pointer;
+  transition: color .1s;
+  user-select: none;
+}
+
+.c-edit-star--filled { color: #f5c518; }
+
+.c-edit-form__textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .85);
+  resize: vertical;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.c-edit-form__textarea:focus { border-color: rgba(77, 196, 164, .45); }
+.c-edit-form__textarea::placeholder { color: rgba(255, 255, 255, .25); }
+
+.c-edit-form__field--check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.c-edit-form__check-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .55);
+  margin: 0;
+}
+
+.c-edit-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.c-edit-form__cancel {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .4);
+  text-decoration: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  transition: color .15s, background .15s;
+}
+
+.c-edit-form__cancel:hover { color: rgba(255, 255, 255, .75); background: rgba(255, 255, 255, .07); }
+
+.c-edit-form__save {
+  height: 40px;
+  padding: 0 1.5rem;
+  background: #2a6655;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.c-edit-form__save:hover { background: #337a68; }

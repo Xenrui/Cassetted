@@ -44,6 +44,53 @@ namespace Cassetted.Controllers
             return RedirectToAction(nameof(Details), new { id = reviewId });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = _userManager.GetUserId(User)!;
+            var viewModel = await _reviewService.GetReviewForEditAsync(id, userId);
+            if (viewModel == null) return NotFound();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Edit")]
+        public async Task<IActionResult> EditPost(int id, EditReviewInputModel input)
+        {
+            var userId = _userManager.GetUserId(User)!;
+
+            if (!ModelState.IsValid)
+            {
+                var vm = await _reviewService.GetReviewForEditAsync(id, userId);
+                if (vm == null) return NotFound();
+                vm.Input = input;
+                return View(vm);
+            }
+
+            var success = await _reviewService.UpdateReviewAsync(id, userId, input);
+            if (!success) return NotFound();
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleLike(int reviewId)
+        {
+            var userId = _userManager.GetUserId(User)!;
+            var (liked, likeCount) = await _reviewService.ToggleLikeAsync(reviewId, userId);
+            return Json(new { liked, likeCount });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = _userManager.GetUserId(User)!;
+            await _reviewService.DeleteReviewAsync(id, userId);
+            return RedirectToAction("Index", "Feed");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateReviewInputModel input)

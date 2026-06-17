@@ -105,8 +105,73 @@ body {
   background: #f0f0f0;
   text-decoration: none;
   transition: background .2s;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  color: #2a2a2a;
 }
 .c-nav__user-btn:hover { background: #e2e2e2; }
+.c-nav__user-btn--auth::after { display: none !important; }
+
+/* Teal online indicator */
+.c-nav__user-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4dc4a4;
+  border: 2px solid #fff;
+  pointer-events: none;
+}
+.cassetted-landing .c-nav__user-dot { border-color: rgba(6,12,11,.8); }
+
+/* ── Nav dropdown menu ── */
+.c-nav__dropdown {
+  min-width: 172px;
+  background: #122b23;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 14px;
+  padding: 0.4rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+  margin-top: 6px !important;
+}
+
+.c-nav__dropdown-item {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .75);
+  padding: 0.55rem 0.85rem;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1;
+}
+.c-nav__dropdown-item:hover, .c-nav__dropdown-item:focus {
+  background: rgba(255, 255, 255, .08);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.c-nav__dropdown-item--danger { color: rgba(255, 110, 110, .7); }
+.c-nav__dropdown-item--danger:hover {
+  background: rgba(255, 60, 60, .08);
+  color: rgba(255, 120, 120, .95) !important;
+}
+
+.c-nav__dropdown-divider {
+  border-color: rgba(255, 255, 255, .07) !important;
+  margin: 0.35rem 0.5rem !important;
+}
 
 /* Dark nav (cassetted-landing pages) */
 .cassetted-landing .c-nav {
@@ -130,10 +195,8 @@ body {
 .cassetted-landing .c-nav__search-input::placeholder { color: rgba(255,255,255,.35); }
 .cassetted-landing .c-nav__search-icon path,
 .cassetted-landing .c-nav__search-icon circle { stroke: rgba(255,255,255,.4); }
-.cassetted-landing .c-nav__user-btn { background: rgba(255,255,255,.08); }
+.cassetted-landing .c-nav__user-btn { background: rgba(255,255,255,.08); color: #d0e8e4; }
 .cassetted-landing .c-nav__user-btn:hover { background: rgba(255,255,255,.15); }
-.cassetted-landing .c-nav__user-btn svg circle,
-.cassetted-landing .c-nav__user-btn svg path { stroke: #d0e8e4; }
 
 /* ── Footer ── */
 .c-footer {
@@ -196,6 +259,8 @@ body {
 }
 
 .c-review-card__username { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+a.c-review-card__username { text-decoration: none; transition: color .15s; }
+a.c-review-card__username:hover { color: #4dc4a4; }
 .c-review-card__sep     { color: rgba(255, 255, 255, 0.3); }
 .c-review-card__date    { color: rgba(255, 255, 255, 0.4); }
 
@@ -240,3 +305,11 @@ body {
   background: rgba(255,255,255,.07);
   box-shadow: none;
 }
+
+/* ── Like button ── */
+.c-like-btn--liked,
+.c-like-btn--liked:hover,
+.c-like-btn--liked:focus {
+  color: rgba(255, 100, 130, .9) !important;
+}
+.c-like-btn__icon { transition: fill .15s; }

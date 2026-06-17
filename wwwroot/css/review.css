@@ -1,0 +1,140 @@
+/* ── Review detail page ── */
+.c-post-page {
+  padding: 1.75rem 2rem 4rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.c-post__back {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  color: rgba(255, 255, 255, .55);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  margin-bottom: 1.25rem;
+}
+.c-post__back:hover { background: rgba(255, 255, 255, .08); color: #ffffff; }
+
+/* ── Main card ── */
+.c-post-card {
+  background: rgba(12, 32, 26, 0.82);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.c-post-card__heading {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .8);
+  letter-spacing: 0.04em;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Review section ── */
+.c-post-card__review {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+}
+
+.c-post-card__menu {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, .4);
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1.1rem;
+  letter-spacing: .1em;
+  transition: color .15s, background .15s;
+}
+.c-post-card__menu:hover { color: rgba(255, 255, 255, .8); background: rgba(255, 255, 255, .07); }
+
+/* ── Comments section ── */
+.c-post-card__comments {
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+.c-comment {
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.c-comment:last-child { margin-bottom: 0; }
+
+.c-comment__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.c-comment__avatar svg { width: 100%; height: 100%; }
+
+.c-comment__bubble {
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .06);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  flex: 1;
+}
+
+.c-comment__username {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .9);
+  margin-bottom: 0.2rem;
+}
+
+.c-comment__body {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, .5);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Reply input ── */
+.c-post-card__reply {
+  padding: 0.85rem 1.5rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+  gap: 0.75rem;
+}
+
+.c-post-card__reply-input {
+  flex: 1;
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 10px;
+  height: 38px;
+  padding: 0 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, .85);
+  outline: none;
+  transition: border-color .2s;
+}
+.c-post-card__reply-input::placeholder { color: rgba(255, 255, 255, .3); }
+.c-post-card__reply-input:focus { border-color: rgba(77, 196, 164, .45); }
+
+.c-post-card__reply-btn {
+  height: 38px;
+  padding: 0 1.1rem;
+  background: #2a6655;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.c-post-card__reply-btn:hover { background: #337a68; }

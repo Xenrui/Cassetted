@@ -19,6 +19,31 @@ namespace Cassetted.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = _userManager.GetUserId(User)!;
+            var viewModel = await _reviewService.GetReviewDetailsAsync(id, userId);
+
+            if (viewModel == null)
+                return NotFound();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment(int reviewId, string body)
+        {
+            if (!string.IsNullOrWhiteSpace(body))
+            {
+                var userId = _userManager.GetUserId(User)!;
+                await _reviewService.AddCommentAsync(reviewId, userId, body);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = reviewId });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateReviewInputModel input)

@@ -1,0 +1,177 @@
+@model BrowseViewModel
+@{
+    ViewData["Title"] = Model.CategoryHeading;
+    ViewData["BodyClass"] = "cassetted-landing";
+    ViewData["ActiveNav"] = "Browse";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/browse.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+}
+
+<div class="c-browse">
+
+    <!-- ── Category heading ── -->
+    <h1 class="c-browse__heading">@Model.CategoryHeading</h1>
+
+    <!-- ── Explore section ── -->
+    <section class="c-browse-explore">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="c-browse-explore__title">Explore</h2>
+            <a href="/Browse" class="c-browse-explore__view-all">View All</a>
+        </div>
+
+        @if (!Model.PopularItems.Any())
+        {
+            <p class="text-muted py-3">No items yet. Be the first to review something!</p>
+        }
+        else
+        {
+            <div class="c-browse-explore__wrap">
+                <div class="c-browse-explore__track">
+                    @foreach (var item in Model.PopularItems)
+                    {
+                        var badgeClass = item.CategoryName.ToLower().Replace(" ", "");
+                        <div class="c-item-card">
+                            <span class="c-item-card__badge c-badge c-badge--@badgeClass rounded-pill">@item.CategoryName</span>
+                            <h3 class="c-item-card__title">@item.Name</h3>
+                            <div class="c-item-card__rating d-flex align-items-center">
+                                <span class="c-item-card__rating-star">&#9733;</span>
+                                <span>@item.AverageRating.ToString("0.0")/5 Rating</span>
+                            </div>
+                            <div class="c-item-card__stats">
+                                @item.CommentCount recent discussions<br />
+                                @item.ReviewCount overall reviews
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <button class="c-browse-explore__arrow d-flex align-items-center justify-content-center" aria-label="Next">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        }
+    </section>
+
+    <!-- ── Community reviews ── -->
+    <section class="c-browse-community">
+        <h2 class="c-browse-community__heading">See what the community says!</h2>
+
+        <div class="c-browse-community__reviews">
+            @if (!Model.Reviews.Any())
+            {
+                <p class="text-muted text-center py-5">No reviews yet.</p>
+            }
+            else
+            {
+                @foreach (var review in Model.Reviews)
+                {
+                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
+                    int filled = (int)Math.Round(review.Rating);
+                    <div class="c-review-card mb-3">
+                        <div class="c-review-card__header d-flex align-items-start justify-content-between mb-2">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="c-avatar c-avatar--sm flex-shrink-0">
+                                    <svg viewBox="0 0 40 40" fill="none">
+                                        <circle cx="20" cy="20" r="20" fill="#2a5045" />
+                                        <circle cx="20" cy="15" r="6" fill="#3d7060" />
+                                        <path d="M7 36c0-7 5.8-12 13-12s13 5 13 12" fill="#3d7060" />
+                                    </svg>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <div class="c-review-card__meta d-flex align-items-center">
+                                        <span class="c-review-card__username">@review.UserDisplayName</span>
+                                        <span class="c-review-card__sep mx-1">·</span>
+                                        <span class="c-review-card__date">@review.CreatedAt.ToString("MM/dd/yyyy")</span>
+                                    </div>
+                                    <div class="c-stars mt-1">
+                                        @Html.Raw(new string('★', filled))
+                                        @if (filled < 5)
+                                        {
+                                            <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="c-badge c-badge--@badgeClass rounded-pill flex-shrink-0">@review.CategoryName</span>
+                        </div>
+                        <h3 class="c-review-card__title">@review.ItemName</h3>
+                        <p class="c-review-card__body">@review.Body</p>
+                        <div class="c-review-card__actions d-flex">
+                            <button class="c-action-btn d-inline-flex align-items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Like@(review.LikeCount > 0 ? $" · {review.LikeCount}" : "")
+                            </button>
+                            <button class="c-action-btn d-inline-flex align-items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Reply@(review.CommentCount > 0 ? $" · {review.CommentCount}" : "")
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <!-- ── Pagination ── -->
+        @if (Model.TotalPages > 1)
+        {
+            int pgStart = Math.Max(1, Model.CurrentPage - 2);
+            int pgEnd = Math.Min(Model.TotalPages, pgStart + 4);
+            pgStart = Math.Max(1, pgEnd - 4);
+
+            <nav class="c-browse-pagination d-flex align-items-center justify-content-center" aria-label="Reviews pagination">
+                @if (Model.CurrentPage > 1)
+                {
+                    <a href="?category=@Model.CategoryId&page=@(Model.CurrentPage - 1)" class="c-pg__arrow" aria-label="Previous page">&#8592;</a>
+                }
+                else
+                {
+                    <span class="c-pg__arrow c-pg__arrow--disabled" aria-disabled="true">&#8592;</span>
+                }
+
+                @if (pgStart > 1)
+                {
+                    <a href="?category=@Model.CategoryId&page=1" class="c-pg__btn">1</a>
+                }
+                @if (pgStart > 2)
+                {
+                    <span class="c-pg__dots">..</span>
+                }
+
+                @for (int p = pgStart; p <= pgEnd; p++)
+                {
+                    string cls = p == Model.CurrentPage ? "c-pg__btn c-pg__btn--active" : "c-pg__btn";
+                    <a href="?category=@Model.CategoryId&page=@p" class="@cls">@p</a>
+                }
+
+                @if (pgEnd < Model.TotalPages - 1)
+                {
+                    <span class="c-pg__dots">..</span>
+                }
+                @if (pgEnd < Model.TotalPages)
+                {
+                    <a href="?category=@Model.CategoryId&page=@Model.TotalPages" class="c-pg__btn">@Model.TotalPages</a>
+                }
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a href="?category=@Model.CategoryId&page=@(Model.CurrentPage + 1)" class="c-pg__arrow" aria-label="Next page">&#8594;</a>
+                }
+                else
+                {
+                    <span class="c-pg__arrow c-pg__arrow--disabled" aria-disabled="true">&#8594;</span>
+                }
+            </nav>
+        }
+
+    </section>
+
+</div>

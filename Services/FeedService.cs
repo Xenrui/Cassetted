@@ -16,25 +16,18 @@ namespace Cassetted.Services
 
         public async Task<List<FeedReviewViewModel>> GetForYouFeedAsync(string currentUserId)
         {
-            return await ProjectReviews(_db.Reviews, currentUserId)
-                .OrderByDescending(r => r.CreatedAt)
-                .Take(50)
-                .ToListAsync();
+            return await FeedQuery(_db.Reviews, currentUserId);
         }
 
         public async Task<List<FeedReviewViewModel>> GetFriendsFeedAsync(string currentUserId)
         {
-            var followedIds = await _db.UserFollows
+            var followedIds = _db.UserFollows
                 .Where(f => f.FollowerId == currentUserId)
-                .Select(f => f.FollowedId)
-                .ToListAsync();
+                .Select(f => f.FollowedId);
 
-            return await ProjectReviews(
-                    _db.Reviews.Where(r => followedIds.Contains(r.UserId)),
-                    currentUserId)
-                .OrderByDescending(r => r.CreatedAt)
-                .Take(50)
-                .ToListAsync();
+            return await FeedQuery(
+                _db.Reviews.Where(r => followedIds.Contains(r.UserId)),
+                currentUserId);
         }
 
         public async Task<List<TrendingItemViewModel>> GetTrendingItemsAsync()
@@ -55,7 +48,7 @@ namespace Cassetted.Services
                 .ToListAsync();
         }
 
-        private static IQueryable<FeedReviewViewModel> ProjectReviews(
+        private static Task<List<FeedReviewViewModel>> FeedQuery(
             IQueryable<Review> source, string currentUserId)
         {
             return source.Select(r => new FeedReviewViewModel
@@ -73,7 +66,10 @@ namespace Cassetted.Services
                 LikeCount = r.Likes.Count,
                 CommentCount = r.Comments.Count,
                 IsLikedByCurrentUser = r.Likes.Any(l => l.UserId == currentUserId)
-            });
+            })
+            .OrderByDescending(r => r.CreatedAt)
+            .Take(50)
+            .ToListAsync();
         }
     }
 }

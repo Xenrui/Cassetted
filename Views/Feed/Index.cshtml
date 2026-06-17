@@ -1,3 +1,4 @@
+@model FeedViewModel
 @{
     ViewData["Title"] = "Feed";
     ViewData["BodyClass"] = "cassetted-landing";
@@ -29,85 +30,66 @@
 
             <!-- Tab switcher -->
             <div class="c-feed-tabs d-flex">
-                <button class="c-feed-tab flex-grow-1 c-feed-tab--active">For You</button>
-                <button class="c-feed-tab flex-grow-1">Friends Only</button>
+                <a href="?tab=foryou" class="c-feed-tab flex-grow-1 @(Model.ActiveTab == "foryou" ? "c-feed-tab--active" : "")">For You</a>
+                <a href="?tab=friends" class="c-feed-tab flex-grow-1 @(Model.ActiveTab == "friends" ? "c-feed-tab--active" : "")">Friends Only</a>
             </div>
 
-            <!-- Review card 1 -->
-            <div class="c-review-card">
-                <div class="c-review-card__header d-flex align-items-center justify-content-between">
-                    <div class="c-review-card__user d-flex align-items-center">
-                        <div class="c-avatar c-avatar--sm">
-                            <svg viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#2a5045" />
-                                <circle cx="20" cy="15" r="6" fill="#3d7060" />
-                                <path d="M7 36c0-7 5.8-12 13-12s13 5 13 12" fill="#3d7060" />
-                            </svg>
+            @if (!Model.Reviews.Any())
+            {
+                <p class="text-muted text-center py-5">
+                    @(Model.ActiveTab == "friends" ? "No reviews from people you follow yet." : "No reviews yet. Be the first to share!")
+                </p>
+            }
+            else
+            {
+                @foreach (var review in Model.Reviews)
+                {
+                    var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
+                    int filled = (int)Math.Round(review.Rating);
+                    <div class="c-review-card">
+                        <div class="c-review-card__header d-flex align-items-center justify-content-between">
+                            <div class="c-review-card__user d-flex align-items-center">
+                                <div class="c-avatar c-avatar--sm">
+                                    <svg viewBox="0 0 40 40" fill="none">
+                                        <circle cx="20" cy="20" r="20" fill="#2a5045" />
+                                        <circle cx="20" cy="15" r="6" fill="#3d7060" />
+                                        <path d="M7 36c0-7 5.8-12 13-12s13 5 13 12" fill="#3d7060" />
+                                    </svg>
+                                </div>
+                                <div class="c-review-card__meta d-flex align-items-center">
+                                    <span class="c-review-card__username">@review.UserDisplayName</span>
+                                    <span class="c-review-card__sep">·</span>
+                                    <span class="c-review-card__date">@review.CreatedAt.ToString("MM/dd/yyyy")</span>
+                                </div>
+                            </div>
+                            <span class="c-badge c-badge--@badgeClass rounded-pill">@review.CategoryName</span>
                         </div>
-                        <div class="c-review-card__meta d-flex align-items-center">
-                            <span class="c-review-card__username">Username</span>
-                            <span class="c-review-card__sep">·</span>
-                            <span class="c-review-card__date">06/12/2026</span>
+                        <div class="c-stars">
+                            @Html.Raw(new string('★', filled))
+                            @if (filled < 5)
+                            {
+                                <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
+                            }
+                        </div>
+                        <h3 class="c-review-card__title">@review.ItemName</h3>
+                        <p class="c-review-card__body">@review.Body</p>
+                        <div class="c-review-card__actions d-flex">
+                            <button class="c-action-btn d-inline-flex align-items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Like@(review.LikeCount > 0 ? $" · {review.LikeCount}" : "")
+                            </button>
+                            <button class="c-action-btn d-inline-flex align-items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Reply@(review.CommentCount > 0 ? $" · {review.CommentCount}" : "")
+                            </button>
                         </div>
                     </div>
-                    <span class="c-badge c-badge--movies rounded-pill">Movies</span>
-                </div>
-                <div class="c-stars">★★★★★</div>
-                <h3 class="c-review-card__title">Movie Title</h3>
-                <p class="c-review-card__body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sem eros, malesuada nec nibh id, congue consectetur elit. Pellentesque auctor ligula quis lacus convallis mattis in quis augue. Nullam ut vehicula enim. Quisque id suscipit augue. Etiam hendrerit scelerisque dolor, non sodales justo dapibus sit amet. Duis tincidunt leo a vestibulum imperdiet. Suspendisse potenti. Maecenas varius mauris tellus, vel faucibus sem tempor eget.</p>
-                <div class="c-review-card__actions d-flex">
-                    <button class="c-action-btn d-inline-flex align-items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Like
-                    </button>
-                    <button class="c-action-btn d-inline-flex align-items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Reply
-                    </button>
-                </div>
-            </div>
-
-            <!-- Review card 2 -->
-            <div class="c-review-card">
-                <div class="c-review-card__header d-flex align-items-center justify-content-between">
-                    <div class="c-review-card__user d-flex align-items-center">
-                        <div class="c-avatar c-avatar--sm">
-                            <svg viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#3a3060" />
-                                <circle cx="20" cy="15" r="6" fill="#5a50a0" />
-                                <path d="M7 36c0-7 5.8-12 13-12s13 5 13 12" fill="#5a50a0" />
-                            </svg>
-                        </div>
-                        <div class="c-review-card__meta d-flex align-items-center">
-                            <span class="c-review-card__username">Username</span>
-                            <span class="c-review-card__sep">·</span>
-                            <span class="c-review-card__date">06/12/2026</span>
-                        </div>
-                    </div>
-                    <span class="c-badge c-badge--games rounded-pill">Games</span>
-                </div>
-                <div class="c-stars">★★★<span class="c-star--empty">★★</span></div>
-                <h3 class="c-review-card__title">Game Title</h3>
-                <p class="c-review-card__body">A solid experience overall with some rough edges. The world design is stunning but the combat system feels repetitive by the midpoint. Still worth playing for the story alone.</p>
-                <div class="c-review-card__actions d-flex">
-                    <button class="c-action-btn d-inline-flex align-items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Like
-                    </button>
-                    <button class="c-action-btn d-inline-flex align-items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Reply
-                    </button>
-                </div>
-            </div>
+                }
+            }
 
         </div>
 
@@ -123,46 +105,33 @@
                 </div>
 
                 <div class="c-trending__list d-flex flex-column">
-                    <div class="c-trending__item d-flex align-items-center">
-                        <span class="c-trending__rank">1</span>
-                        <div class="c-trending__info">
-                            <div class="c-trending__title">Book Title</div>
-                            <div class="c-stars c-stars--sm">★★★★★</div>
-                        </div>
-                        <span class="c-badge c-badge--books rounded-pill">Books</span>
-                    </div>
-                    <div class="c-trending__item d-flex align-items-center">
-                        <span class="c-trending__rank">2</span>
-                        <div class="c-trending__info">
-                            <div class="c-trending__title">Movie Title</div>
-                            <div class="c-stars c-stars--sm">★★★★★</div>
-                        </div>
-                        <span class="c-badge c-badge--movies rounded-pill">Movies</span>
-                    </div>
-                    <div class="c-trending__item d-flex align-items-center">
-                        <span class="c-trending__rank">3</span>
-                        <div class="c-trending__info">
-                            <div class="c-trending__title">Book Title</div>
-                            <div class="c-stars c-stars--sm">★★★★★</div>
-                        </div>
-                        <span class="c-badge c-badge--books rounded-pill">Books</span>
-                    </div>
-                    <div class="c-trending__item d-flex align-items-center">
-                        <span class="c-trending__rank">4</span>
-                        <div class="c-trending__info">
-                            <div class="c-trending__title">Game Title</div>
-                            <div class="c-stars c-stars--sm">★★★★★</div>
-                        </div>
-                        <span class="c-badge c-badge--games rounded-pill">Games</span>
-                    </div>
-                    <div class="c-trending__item d-flex align-items-center">
-                        <span class="c-trending__rank">5</span>
-                        <div class="c-trending__info">
-                            <div class="c-trending__title">Anime Title</div>
-                            <div class="c-stars c-stars--sm">★★★★★</div>
-                        </div>
-                        <span class="c-badge c-badge--anime rounded-pill">Anime</span>
-                    </div>
+                    @if (!Model.TrendingItems.Any())
+                    {
+                        <p class="text-muted small text-center py-2">Nothing trending yet.</p>
+                    }
+                    else
+                    {
+                        @for (int i = 0; i < Model.TrendingItems.Count; i++)
+                        {
+                            var item = Model.TrendingItems[i];
+                            var trendBadgeClass = item.CategoryName.ToLower().Replace(" ", "");
+                            int trendFilled = (int)Math.Round(item.AverageRating);
+                            <div class="c-trending__item d-flex align-items-center">
+                                <span class="c-trending__rank">@(i + 1)</span>
+                                <div class="c-trending__info">
+                                    <div class="c-trending__title">@item.Name</div>
+                                    <div class="c-stars c-stars--sm">
+                                        @Html.Raw(new string('★', trendFilled))
+                                        @if (trendFilled < 5)
+                                        {
+                                            <span class="c-star--empty">@Html.Raw(new string('★', 5 - trendFilled))</span>
+                                        }
+                                    </div>
+                                </div>
+                                <span class="c-badge c-badge--@trendBadgeClass rounded-pill">@item.CategoryName</span>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </aside>

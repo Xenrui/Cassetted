@@ -1,0 +1,204 @@
+/* ── Browse page container ── */
+.c-browse {
+  padding: 2.5rem 3rem 5rem;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.c-browse__heading {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 2.5rem;
+  letter-spacing: 0.01em;
+}
+
+/* ── Explore section ── */
+.c-browse-explore { margin-bottom: 3.5rem; }
+
+.c-browse-explore__title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.c-browse-explore__view-all {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .5);
+  text-decoration: none;
+  transition: color .2s;
+}
+.c-browse-explore__view-all:hover { color: #4dc4a4; }
+
+.c-browse-explore__wrap {
+  background: rgba(8, 22, 18, 0.5);
+  border: 1px solid rgba(255, 255, 255, .05);
+  border-radius: 16px;
+  padding: 1.4rem 4.5rem 1.4rem 1.4rem;
+  position: relative;
+}
+
+.c-browse-explore__track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.c-browse-explore__arrow {
+  position: absolute;
+  right: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #16302a;
+  border: 1px solid rgba(255, 255, 255, .15);
+  color: #ffffff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.c-browse-explore__arrow:hover { background: #244d42; }
+
+/* ── Item cards ── */
+.c-item-card {
+  background: rgba(42, 95, 78, 0.55);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 14px;
+  padding: 1.1rem 1.1rem 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: background .2s;
+}
+.c-item-card:hover { background: rgba(42, 95, 78, 0.78); }
+
+.c-item-card__badge {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+}
+
+.c-item-card__title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 3.5rem 0.75rem 0;
+  line-height: 1.3;
+}
+
+.c-item-card__rating {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .85);
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+
+.c-item-card__rating-star { color: #f5c518; font-size: 1rem; }
+
+.c-item-card__stats {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, .38);
+  line-height: 1.7;
+}
+
+/* ── Community reviews section ── */
+.c-browse-community__heading {
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 1.65rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 1.5rem;
+  letter-spacing: 0.01em;
+}
+
+/* Browse review cards differ from feed: full width, colored like icon */
+.c-browse .c-review-card {
+  background: rgba(18, 44, 37, 0.72);
+  border-radius: 14px;
+  padding: 1.4rem 1.5rem;
+}
+
+.c-browse .c-review-card__header { margin-bottom: 0; }
+
+.c-browse .c-review-card__meta {
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.c-browse .c-review-card__stars-meta {
+  font-size: 1rem;
+  color: #f5c518;
+  letter-spacing: .05em;
+}
+
+.c-browse .c-review-card__title {
+  font-size: 1.05rem;
+  margin: 0.65rem 0 0.55rem;
+}
+
+.c-browse .c-review-card__actions { margin-top: 0.1rem; }
+
+/* Like button gets a pink hint in browse */
+.c-browse .c-review-card .c-action-btn:first-child { color: rgba(255, 130, 150, .65); }
+.c-browse .c-review-card .c-action-btn:first-child:hover { color: rgba(255, 130, 150, .95) !important; }
+
+/* ── Pagination ── */
+.c-browse-pagination {
+  padding-top: 2.5rem;
+  gap: 0.25rem;
+}
+
+.c-pg__btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, .55);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-pg__btn:hover, .c-pg__btn:focus { color: #ffffff; background: rgba(255, 255, 255, .07); text-decoration: none; }
+.c-pg__btn--active { color: #ffffff; background: rgba(255, 255, 255, .1); }
+
+.c-pg__arrow {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, .5);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color .15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-pg__arrow:hover, .c-pg__arrow:focus { color: #ffffff; text-decoration: none; }
+.c-pg__arrow--disabled { opacity: 0.3; pointer-events: none; }
+
+.c-pg__dots {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, .35);
+  padding: 0 0.25rem;
+  user-select: none;
+}

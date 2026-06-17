@@ -8,6 +8,8 @@ namespace Cassetted.Models.ViewModels
         [Range(1, 6)]
         public int CategoryId { get; set; }
 
+        public int? ItemId { get; set; }
+
         [Required(ErrorMessage = "Please enter a title.")]
         [StringLength(200, MinimumLength = 1)]
         public string ItemName { get; set; } = string.Empty;

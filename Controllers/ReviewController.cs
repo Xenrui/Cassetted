@@ -11,12 +11,24 @@ namespace Cassetted.Controllers
     public class ReviewController : Controller
     {
         private readonly ReviewService _reviewService;
+        private readonly SearchService _searchService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReviewController(ReviewService reviewService, UserManager<ApplicationUser> userManager)
+        public ReviewController(
+            ReviewService reviewService,
+            SearchService searchService,
+            UserManager<ApplicationUser> userManager)
         {
             _reviewService = reviewService;
+            _searchService = searchService;
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchItems(int categoryId, string q)
+        {
+            var results = await _searchService.SearchItemsForCategoryAsync(categoryId, q ?? string.Empty);
+            return Json(results);
         }
 
         [HttpGet]

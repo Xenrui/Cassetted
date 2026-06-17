@@ -27,6 +27,7 @@ builder.Services.AddScoped<Cassetted.Services.ReviewService>();
 builder.Services.AddScoped<Cassetted.Services.BrowseService>();
 builder.Services.AddScoped<Cassetted.Services.LibraryService>();
 builder.Services.AddScoped<Cassetted.Services.ProfileService>();
+builder.Services.AddScoped<Cassetted.Services.SearchService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

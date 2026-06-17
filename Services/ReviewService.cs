@@ -137,21 +137,31 @@ namespace Cassetted.Services
 
         public async Task<(bool Success, string? Error)> CreateReviewAsync(string userId, CreateReviewInputModel input)
         {
-            var itemName = input.ItemName.Trim();
-
-            var item = await _db.Items.FirstOrDefaultAsync(i =>
-                i.CategoryId == input.CategoryId && i.Name == itemName);
-
-            if (item == null)
+            Item? item;
+            if (input.ItemId.HasValue)
             {
-                item = new Item
+                item = await _db.Items.FirstOrDefaultAsync(i =>
+                    i.Id == input.ItemId.Value && i.CategoryId == input.CategoryId);
+                if (item == null)
+                    return (false, "Selected item is no longer available.");
+            }
+            else
+            {
+                var itemName = input.ItemName.Trim();
+                item = await _db.Items.FirstOrDefaultAsync(i =>
+                    i.CategoryId == input.CategoryId && i.Name == itemName);
+
+                if (item == null)
                 {
-                    Name = itemName,
-                    CategoryId = input.CategoryId,
-                    CreatedByUserId = userId
-                };
-                _db.Items.Add(item);
-                await _db.SaveChangesAsync();
+                    item = new Item
+                    {
+                        Name = itemName,
+                        CategoryId = input.CategoryId,
+                        CreatedByUserId = userId
+                    };
+                    _db.Items.Add(item);
+                    await _db.SaveChangesAsync();
+                }
             }
 
             var alreadyReviewed = await _db.Reviews.AnyAsync(r => r.UserId == userId && r.ItemId == item.Id);

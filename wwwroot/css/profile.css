@@ -1,0 +1,254 @@
+/* ── Profile page ── */
+.c-profile {
+  padding: 2.5rem 2rem 5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Profile header card ── */
+.c-profile-header {
+  background: rgba(12, 35, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 18px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.c-profile-header__avatar {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #1d4a3e;
+  border: 3px solid rgba(255, 255, 255, .12);
+}
+.c-profile-header__avatar svg { width: 100%; height: 100%; }
+
+.c-profile-header__info { flex: 1; min-width: 0; }
+
+.c-profile-header__name-row {
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.c-profile-header__name {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+.c-profile-header__edit-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, .35);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.c-profile-header__edit-btn:hover {
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .75);
+}
+
+.c-profile-header__bio {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .45);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.c-profile-header__bio-empty {
+  font-style: italic;
+  color: rgba(255, 255, 255, .22);
+}
+
+/* ── Social stats ── */
+.c-profile-header__stats { gap: 2rem; flex-shrink: 0; }
+
+.c-profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 56px;
+}
+
+.c-profile-stat__num {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.c-profile-stat__label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, .38);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+/* ── Follow button ── */
+.c-profile-header__follow-btn {
+  height: 38px;
+  padding: 0 1.25rem;
+  border-radius: 19px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.c-profile-header__follow-btn--follow {
+  background: rgba(77, 196, 164, .14);
+  border: 1px solid rgba(77, 196, 164, .42);
+  color: #4dc4a4;
+}
+.c-profile-header__follow-btn--follow:hover {
+  background: rgba(77, 196, 164, .24);
+  border-color: rgba(77, 196, 164, .65);
+}
+
+.c-profile-header__follow-btn--unfollow {
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .15);
+  color: rgba(255, 255, 255, .65);
+}
+.c-profile-header__follow-btn--unfollow:hover {
+  background: rgba(255, 80, 80, .1);
+  border-color: rgba(255, 80, 80, .3);
+  color: rgba(255, 120, 120, .85);
+}
+
+/* ── Insight cards ── */
+.c-profile-insights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.c-profile-insight {
+  background: rgba(12, 35, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 16px;
+  padding: 1.5rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.c-profile-insight__value {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.c-profile-insight__star { color: #f5c518; font-size: 1.4rem; }
+
+.c-profile-insight__value--category {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+.c-profile-insight__label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, .35);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top: 0.1rem;
+}
+
+/* ── Activity by category ── */
+.c-profile-activity {
+  background: rgba(12, 35, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem 1.75rem;
+}
+
+.c-profile-activity__title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .85);
+  margin: 0 0 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.c-profile-activity__rows { display: flex; flex-direction: column; gap: 0.85rem; }
+
+.c-profile-activity__row {
+  display: grid;
+  grid-template-columns: 84px 1fr 68px;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.c-profile-activity__count {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, .38);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Category bar ── */
+.c-profile-bar {
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .07);
+  overflow: hidden;
+}
+
+.c-profile-bar__fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width .5s ease;
+}
+
+/* Category bar colors */
+.c-profile-bar__fill--movies  { background: linear-gradient(90deg, #ff7090 0%, #ff9ab0 100%); }
+.c-profile-bar__fill--tvshows { background: linear-gradient(90deg, #e8963c, #ffb45a); }
+.c-profile-bar__fill--music   { background: linear-gradient(90deg, #3a9fd9, #64beff); }
+.c-profile-bar__fill--books   { background: linear-gradient(90deg, #2ea87e, #50c8a0); }
+.c-profile-bar__fill--anime   { background: linear-gradient(90deg, #e0b520, #ffd73c); }
+.c-profile-bar__fill--games   { background: linear-gradient(90deg, #a06dff, #c490ff); }
+
+/* ── Empty activity ── */
+.c-profile-activity__empty {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, .25);
+  text-align: center;
+  padding: 1.5rem 0 0.5rem;
+  font-style: italic;
+}

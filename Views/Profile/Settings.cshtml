@@ -1,0 +1,165 @@
+@model SettingsViewModel
+@{
+    ViewData["Title"] = "Settings";
+    ViewData["BodyClass"] = "cassetted-landing";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/settings.css" asp-append-version="true" />
+}
+
+<div class="c-settings">
+
+    <!-- ── Header ── -->
+    <div class="c-settings__header">
+        <h1 class="c-settings__title">Settings</h1>
+        <p class="c-settings__subtitle">Manage your profile and account preferences.</p>
+    </div>
+
+    <!-- ── Banners ── -->
+    @if (TempData["Saved"] != null)
+    {
+        <div class="c-settings__saved" role="alert">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Profile updated successfully.
+        </div>
+    }
+    @if (TempData["PasswordChanged"] != null)
+    {
+        <div class="c-settings__saved" role="alert">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Password changed successfully.
+        </div>
+    }
+
+    <!-- ── Validation summary ── -->
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="c-settings__saved" style="border-color:rgba(255,80,80,.35);background:rgba(255,80,80,.08);color:rgba(255,120,120,.9);" role="alert">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            Please fix the errors below before saving.
+        </div>
+    }
+
+    <form asp-action="Settings" method="post" novalidate>
+        @Html.AntiForgeryToken()
+
+        <!-- ── Profile section ── -->
+        <div class="c-settings__section">
+
+            <div class="c-settings__section-header">
+                <h2 class="c-settings__section-title">Profile</h2>
+            </div>
+
+            <div class="c-settings__section-body">
+
+                <!-- Avatar + name preview -->
+                <div class="c-settings__avatar-row d-flex align-items-center">
+                    <div class="c-settings__avatar">
+                        <svg viewBox="0 0 80 80" fill="none">
+                            <rect width="80" height="80" fill="#1d4a3e" />
+                            <circle cx="40" cy="31" r="15" fill="#2e6b58" />
+                            <path d="M7 80c0-18 14.8-31 33-31s33 13 33 31" fill="#2e6b58" />
+                        </svg>
+                    </div>
+                    <div class="c-settings__avatar-info">
+                        <p class="c-settings__avatar-name" id="preview-name">@Model.DisplayName</p>
+                        <p class="c-settings__avatar-hint">Profile picture upload coming soon.</p>
+                    </div>
+                </div>
+
+                <!-- Display name -->
+                <div class="c-settings__field">
+                    <label class="c-settings__label" asp-for="DisplayName">Username</label>
+                    <input class="c-settings__input @(ViewData.ModelState["DisplayName"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           asp-for="DisplayName"
+                           id="input-display-name"
+                           placeholder="Your username"
+                           autocomplete="username" />
+                    <span asp-validation-for="DisplayName" class="c-settings__error"></span>
+                    <span class="c-settings__hint">Used throughout the app. Letters, numbers, underscores, hyphens, and periods only.</span>
+                </div>
+
+                <!-- Bio -->
+                <div class="c-settings__field">
+                    <label class="c-settings__label" asp-for="Bio">Bio</label>
+                    <textarea class="c-settings__textarea"
+                              asp-for="Bio"
+                              id="input-bio"
+                              placeholder="Tell the community a bit about yourself…"
+                              maxlength="300"></textarea>
+                    <span asp-validation-for="Bio" class="c-settings__error"></span>
+                    <span class="c-settings__char-count"><span id="bio-count">@(Model.Bio?.Length ?? 0)</span> / 300</span>
+                </div>
+
+            </div>
+
+            <hr class="c-settings__divider" />
+
+            <div class="px-4 pb-4">
+                <button type="submit" class="c-settings__save-btn">SAVE CHANGES</button>
+            </div>
+
+        </div>
+
+    </form>
+
+    <!-- ── Account section (info only) ── -->
+    <div class="c-settings__section">
+
+        <div class="c-settings__section-header">
+            <h2 class="c-settings__section-title">Account</h2>
+        </div>
+
+        <div class="c-settings__section-body">
+
+            <div class="c-settings__info-row">
+                <span class="c-settings__info-label">Email</span>
+                <span class="c-settings__info-value">@Model.Email</span>
+            </div>
+
+            <div class="c-settings__info-row">
+                <span class="c-settings__info-label">Password</span>
+                <a class="c-settings__info-link" asp-controller="Profile" asp-action="ChangePassword">
+                    Change password
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        // Live preview of username
+        const nameInput = document.getElementById('input-display-name');
+        const preview = document.getElementById('preview-name');
+        if (nameInput && preview) {
+            nameInput.addEventListener('input', () => {
+                preview.textContent = nameInput.value || 'Your username';
+            });
+        }
+
+        // Bio character counter
+        const bioInput = document.getElementById('input-bio');
+        const bioCount = document.getElementById('bio-count');
+        if (bioInput && bioCount) {
+            bioInput.addEventListener('input', () => {
+                bioCount.textContent = bioInput.value.length;
+            });
+        }
+    </script>
+}

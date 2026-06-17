@@ -27,7 +27,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <a href="/Feed" class="c-nav__link @(activeNav == "Feed" ? "c-nav__link--active" : "")">Feed</a>
                     <div class="position-relative">
-                        <a href="#" class="c-nav__link @(activeNav == "Browse" ? "c-nav__link--active" : "")">
+                        <a href="/Browse" class="c-nav__link @(activeNav == "Browse" ? "c-nav__link--active" : "")">
                             Browse
                             <svg class="c-nav__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
                                 <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
@@ -55,7 +55,9 @@
         </div>
     </nav>
 
-    @RenderBody()
+    <main class="flex-grow-1">
+        @RenderBody()
+    </main>
 
     <footer class="c-footer">
         <div class="container text-center">

@@ -5,7 +5,12 @@ html { font-size: 14px; }
   html { font-size: 16px; }
 }
 
-body { margin-bottom: 60px; }
+body {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus,
 .form-control:focus, .form-check-input:focus {
@@ -19,6 +24,12 @@ body { margin-bottom: 60px; }
 }
 .form-floating > .form-control-plaintext:focus::placeholder,
 .form-floating > .form-control:focus::placeholder { text-align: start; }
+
+/* ── Bootstrap overrides for dark pages ── */
+.cassetted-landing .text-muted,
+.cassetted-landing .text-muted p {
+  color: rgba(255, 255, 255, .42) !important;
+}
 
 /* ── Dark page body class ── */
 .cassetted-landing {
@@ -126,6 +137,7 @@ body { margin-bottom: 60px; }
 
 /* ── Footer ── */
 .c-footer {
+  margin-top: auto;
   padding: 1rem 0;
   font-family: 'Outfit', sans-serif;
   font-size: .85rem;
@@ -158,6 +170,52 @@ body { margin-bottom: 60px; }
 .c-stars { font-size: 1rem; color: #f5c518; letter-spacing: .05em; }
 .c-stars--sm { font-size: .8rem; }
 .c-star--empty { color: rgba(245,197,24,.25); }
+
+/* ── Shared: Review cards ── */
+.c-review-card {
+  background: rgba(15, 38, 32, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.c-review-card__header { margin-bottom: 0.6rem; }
+
+.c-review-card__user { gap: 0.75rem; }
+
+.c-review-card__meta {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  gap: 0.35rem;
+}
+
+.c-review-card__username { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+.c-review-card__sep     { color: rgba(255, 255, 255, 0.3); }
+.c-review-card__date    { color: rgba(255, 255, 255, 0.4); }
+
+.c-review-card__title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0.35rem 0 0.6rem;
+  letter-spacing: 0.01em;
+}
+
+.c-review-card__body {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.65;
+  margin: 0 0 1rem;
+}
+
+.c-review-card__actions {
+  gap: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.75rem;
+}
 
 /* ── Shared: Action buttons ── */
 .c-action-btn {

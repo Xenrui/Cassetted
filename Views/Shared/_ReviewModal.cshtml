@@ -1,0 +1,143 @@
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog c-review-modal-dialog">
+        <div class="modal-content c-review-modal">
+            <div class="modal-body p-0">
+
+                <div class="c-review-modal__header position-relative text-center">
+                    <h5 class="c-review-modal__title" id="reviewModalLabel">Create a Review</h5>
+                    <button type="button" class="c-review-modal__close position-absolute"
+                            data-bs-dismiss="modal" aria-label="Close">&#x2715;</button>
+                </div>
+
+                <form id="reviewForm" class="c-review-modal__body d-flex flex-column">
+                    @Html.AntiForgeryToken()
+
+                    <div class="c-review-modal__field d-flex flex-column">
+                        <label class="c-review-modal__label">Category</label>
+                        <select class="c-review-modal__select" id="reviewCategory" name="CategoryId">
+                            <option value="" disabled selected>Select Category</option>
+                            <option value="1">Movies</option>
+                            <option value="2">TV Shows</option>
+                            <option value="3">Music</option>
+                            <option value="4">Books</option>
+                            <option value="5">Anime</option>
+                            <option value="6">Games</option>
+                        </select>
+                    </div>
+
+                    <div class="c-review-modal__field d-flex flex-column">
+                        <label class="c-review-modal__label">Title</label>
+                        <input type="text" class="c-review-modal__input" id="reviewTitle" name="ItemName" />
+                    </div>
+
+                    <div class="c-review-modal__field d-flex flex-column">
+                        <label class="c-review-modal__label">Rating</label>
+                        <div class="c-review-modal__stars d-flex" id="modalStars">
+                            <span class="c-review-modal__star" data-value="1">&#9733;</span>
+                            <span class="c-review-modal__star" data-value="2">&#9733;</span>
+                            <span class="c-review-modal__star" data-value="3">&#9733;</span>
+                            <span class="c-review-modal__star" data-value="4">&#9733;</span>
+                            <span class="c-review-modal__star" data-value="5">&#9733;</span>
+                        </div>
+                        <input type="hidden" id="reviewRating" name="Rating" value="0" />
+                    </div>
+
+                    <div class="c-review-modal__field d-flex flex-column">
+                        <label class="c-review-modal__label">Comments</label>
+                        <textarea class="c-review-modal__textarea" id="reviewComments" name="Body" rows="8"></textarea>
+                    </div>
+
+                    <p id="reviewError" class="text-danger small mb-0" aria-live="polite"></p>
+
+                    <button type="button" class="c-review-modal__fav-btn d-flex align-items-center justify-content-center gap-2" id="favBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                        </svg>
+                        Add to Favorites
+                    </button>
+
+                    <button type="button" class="c-review-modal__post-btn" id="reviewPostBtn">POST</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const stars = document.querySelectorAll('.c-review-modal__star');
+        const ratingInput = document.getElementById('reviewRating');
+
+        function paintStars(val) {
+            stars.forEach(s => s.classList.toggle('is-active', parseInt(s.dataset.value) <= val));
+        }
+
+        stars.forEach(star => {
+            star.addEventListener('mouseenter', () => paintStars(parseInt(star.dataset.value)));
+            star.addEventListener('mouseleave', () => paintStars(parseInt(ratingInput.value)));
+            star.addEventListener('click', () => {
+                ratingInput.value = star.dataset.value;
+                paintStars(parseInt(ratingInput.value));
+            });
+        });
+
+        const favBtn = document.getElementById('favBtn');
+        if (favBtn) {
+            favBtn.addEventListener('click', function () {
+                this.classList.toggle('is-active');
+            });
+        }
+
+        document.getElementById('reviewPostBtn').addEventListener('click', async function () {
+            const errorEl = document.getElementById('reviewError');
+            errorEl.textContent = '';
+
+            const categoryVal = document.getElementById('reviewCategory').value;
+            const itemName = document.getElementById('reviewTitle').value.trim();
+            const ratingVal = ratingInput.value;
+            const body = document.getElementById('reviewComments').value.trim();
+
+            if (!categoryVal) { errorEl.textContent = 'Please select a category.'; return; }
+            if (!itemName) { errorEl.textContent = 'Please enter a title.'; return; }
+            if (!ratingVal || ratingVal === '0') { errorEl.textContent = 'Please select a rating.'; return; }
+            if (!body) { errorEl.textContent = 'Please write a comment.'; return; }
+
+            const btn = this;
+            btn.disabled = true;
+            btn.textContent = 'Posting...';
+
+            try {
+                const response = await fetch('/Review/Create', {
+                    method: 'POST',
+                    body: new FormData(document.getElementById('reviewForm'))
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide();
+                } else {
+                    errorEl.textContent = result.errors?.[0] ?? 'Something went wrong.';
+                }
+            } catch {
+                errorEl.textContent = 'An error occurred. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'POST';
+            }
+        });
+
+        const reviewModal = document.getElementById('reviewModal');
+        if (reviewModal) {
+            reviewModal.addEventListener('hidden.bs.modal', function () {
+                document.getElementById('reviewCategory').value = '';
+                document.getElementById('reviewTitle').value = '';
+                document.getElementById('reviewComments').value = '';
+                ratingInput.value = '0';
+                paintStars(0);
+                if (favBtn) favBtn.classList.remove('is-active');
+                document.getElementById('reviewError').textContent = '';
+            });
+        }
+    })();
+</script>

@@ -63,6 +63,7 @@ namespace Cassetted.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Repeat Password")]
             [Compare("Password", ErrorMessage = "Passwords do not match.")]
@@ -81,7 +82,7 @@ namespace Cassetted.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= "/Feed";
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (!ModelState.IsValid)

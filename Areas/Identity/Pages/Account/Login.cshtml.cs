@@ -50,7 +50,7 @@ namespace Cassetted.Areas.Identity.Pages.Account
             if (!string.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(string.Empty, ErrorMessage);
 
-            returnUrl ??= Url.Content("~/Feed");
+            returnUrl ??= "/Feed";
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             ReturnUrl = returnUrl;
             return Page();
@@ -58,7 +58,7 @@ namespace Cassetted.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= "/Feed";
 
             if (!ModelState.IsValid)
                 return Page();

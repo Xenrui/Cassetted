@@ -46,7 +46,7 @@
                 {
                     var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
                     int filled = (int)Math.Round(review.Rating);
-                    <div class="c-review-card">
+                    <div class="c-review-card" data-href="@Url.Action("Details", "Review", new { id = review.Id })">
                         <div class="c-review-card__header d-flex align-items-center justify-content-between">
                             <div class="c-review-card__user d-flex align-items-center">
                                 <div class="c-avatar c-avatar--sm">
@@ -71,7 +71,7 @@
                                 <span class="c-star--empty">@Html.Raw(new string('★', 5 - filled))</span>
                             }
                         </div>
-                        <h3 class="c-review-card__title">@review.ItemName</h3>
+                        <h3 class="c-review-card__title"><a asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">@review.ItemName</a></h3>
                         <p class="c-review-card__body">@review.Body</p>
                         <div class="c-review-card__actions d-flex">
                             <button class="c-action-btn d-inline-flex align-items-center gap-2">

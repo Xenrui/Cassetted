@@ -120,7 +120,7 @@
   transition: background .2s, border-color .2s, transform .2s;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   text-decoration: none;
   color: inherit;
 }
@@ -201,6 +201,22 @@
   opacity: 0.65;
   line-height: 1;
 }
+
+/* ── Library card menu button ── */
+.c-lib-card__menu-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, .3);
+  padding: 2px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1rem;
+  letter-spacing: .1em;
+  transition: color .15s, background .15s;
+  flex-shrink: 0;
+}
+.c-lib-card__menu-btn:hover { color: rgba(255, 255, 255, .75); background: rgba(255, 255, 255, .1); }
 
 /* ── Empty state ── */
 .c-lib-empty {

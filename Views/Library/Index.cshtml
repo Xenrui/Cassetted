@@ -9,6 +9,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/library.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/feed.css" asp-append-version="true" />
 }
 
 <div class="c-library">
@@ -68,8 +69,8 @@
                 {
                     var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
                     int filled = (int)Math.Round(review.Rating);
-                    <a class="c-lib-card @(review.IsFavorited ? "c-lib-card--fav" : "")"
-                       asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">
+                    <div class="c-lib-card @(review.IsFavorited ? "c-lib-card--fav" : "")"
+                         data-href="@Url.Action("Details", "Review", new { id = review.Id })">
                         <span class="c-badge c-badge--@badgeClass rounded-pill c-lib-card__badge">@review.CategoryName</span>
                         <div class="c-lib-card__top">
                             <div class="c-lib-card__stars">
@@ -86,12 +87,26 @@
                         </div>
                         <div class="c-lib-card__footer">
                             <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
-                            @if (review.IsFavorited)
-                            {
-                                <span class="c-lib-card__fav-icon">&#9733;</span>
-                            }
+                            <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation()">
+                                @if (review.IsFavorited)
+                                {
+                                    <span class="c-lib-card__fav-icon">&#9733;</span>
+                                }
+                                <div class="dropdown">
+                                    <button class="c-lib-card__menu-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">&#8942;</button>
+                                    <ul class="dropdown-menu dropdown-menu-end c-post-card__dropdown">
+                                        <li><a class="dropdown-item" asp-controller="Review" asp-action="Edit" asp-route-id="@review.Id">Edit</a></li>
+                                        <li>
+                                            <form asp-controller="Review" asp-action="Delete" asp-route-id="@review.Id" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="dropdown-item c-post-card__dropdown-delete">Delete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 }
             </div>
         }
@@ -126,8 +141,8 @@
                 {
                     var badgeClass = review.CategoryName.ToLower().Replace(" ", "");
                     int filled = (int)Math.Round(review.Rating);
-                    <a class="c-lib-card c-lib-card--fav"
-                       asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">
+                    <div class="c-lib-card c-lib-card--fav"
+                         data-href="@Url.Action("Details", "Review", new { id = review.Id })">
                         <span class="c-badge c-badge--@badgeClass rounded-pill c-lib-card__badge">@review.CategoryName</span>
                         <div class="c-lib-card__top">
                             <div class="c-lib-card__stars">
@@ -144,9 +159,23 @@
                         </div>
                         <div class="c-lib-card__footer">
                             <span class="c-lib-card__date">@review.CreatedAt.ToString("MMM d, yyyy")</span>
-                            <span class="c-lib-card__fav-icon">&#9733;</span>
+                            <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation()">
+                                <span class="c-lib-card__fav-icon">&#9733;</span>
+                                <div class="dropdown">
+                                    <button class="c-lib-card__menu-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">&#8942;</button>
+                                    <ul class="dropdown-menu dropdown-menu-end c-post-card__dropdown">
+                                        <li><a class="dropdown-item" asp-controller="Review" asp-action="Edit" asp-route-id="@review.Id">Edit</a></li>
+                                        <li>
+                                            <form asp-controller="Review" asp-action="Delete" asp-route-id="@review.Id" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="dropdown-item c-post-card__dropdown-delete">Delete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 }
             </div>
         }

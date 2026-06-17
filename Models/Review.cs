@@ -8,7 +8,6 @@ namespace Cassetted.Models
         public decimal Rating { get; set; }
         public string? Title { get; set; }
         public string Body { get; set; } = string.Empty;
-        public bool IsFavorited { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
@@ -16,5 +15,6 @@ namespace Cassetted.Models
         public Item Item { get; set; } = null!;
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<ReviewLike> Likes { get; set; } = new List<ReviewLike>();
+        public ICollection<ReviewFavorite> Favorites { get; set; } = new List<ReviewFavorite>();
     }
 }

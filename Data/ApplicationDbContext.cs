@@ -15,6 +15,7 @@ namespace Cassetted.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ReviewLike> ReviewLikes { get; set; }
+        public DbSet<ReviewFavorite> ReviewFavorites { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserFollow> UserFollows { get; set; }
 
@@ -36,6 +37,23 @@ namespace Cassetted.Data
                 .HasOne(rl => rl.Review)
                 .WithMany(r => r.Likes)
                 .HasForeignKey(rl => rl.ReviewId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ReviewFavorite — composite PK; User Restrict, Review Cascade
+            // (mirrors ReviewLike to avoid multi-cascade-path errors)
+            builder.Entity<ReviewFavorite>()
+                .HasKey(rf => new { rf.UserId, rf.ReviewId });
+
+            builder.Entity<ReviewFavorite>()
+                .HasOne(rf => rf.User)
+                .WithMany(u => u.ReviewFavorites)
+                .HasForeignKey(rf => rf.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ReviewFavorite>()
+                .HasOne(rf => rf.Review)
+                .WithMany(r => r.Favorites)
+                .HasForeignKey(rf => rf.ReviewId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // UserFollow — composite PK; both FKs Restrict to avoid SQL Server

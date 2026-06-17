@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,43 +6,59 @@
     <title>@ViewData["Title"] - Cassetted</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Outfit:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Cassetted.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Cassetted</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+<body class="@(ViewData["BodyClass"])">
+
+    <nav class="c-nav">
+        <div class="c-nav__inner">
+            <div class="c-nav__left">
+                <a href="/" class="c-nav__logo-link">
+                    <img src="~/images/logo.png" alt="Cassetted" class="c-nav__logo" />
+                </a>
+                <div class="c-nav__links">
+                    <a href="/Feed" class="c-nav__link">Feed</a>
+                    <div class="c-nav__dropdown-wrap">
+                        <a href="#" class="c-nav__link">
+                            Browse
+                            <svg class="c-nav__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                    </div>
+                    <a href="/Library" class="c-nav__link">Library</a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            <div class="c-nav__right">
+                <div class="c-nav__search">
+                    <svg class="c-nav__search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none">
+                        <circle cx="6.5" cy="6.5" r="4.5" stroke="#999" stroke-width="1.5" />
+                        <path d="M10.5 10.5l3 3" stroke="#999" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <input type="search" class="c-nav__search-input" placeholder="Search titles, users, reviews..." />
+                </div>
+                <a href="/Identity/Account/Login" class="c-nav__user-btn" aria-label="Account">
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4" stroke="#2a2a2a" stroke-width="1.8" />
+                        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="#2a2a2a" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
 
-    <footer class="border-top footer text-muted">
+    @RenderBody()
+
+    <footer class="c-footer">
         <div class="container">
-            &copy; 2026 - Cassetted - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2026 Cassetted &mdash; <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

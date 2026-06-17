@@ -13,7 +13,6 @@ namespace Cassetted.Models
         public ICollection<ReviewLike> ReviewLikes { get; set; } = new List<ReviewLike>();
         public ICollection<UserFollow> Followers { get; set; } = new List<UserFollow>();
         public ICollection<UserFollow> Following { get; set; } = new List<UserFollow>();
-        public ICollection<Category> Categories { get; set; } = new List<Category>();
         public ICollection<Item> Items { get; set; } = new List<Item>();
     }
 }

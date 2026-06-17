@@ -11,8 +11,6 @@ namespace Cassetted.Models.ViewModels
         [Required(ErrorMessage = "Please write a review.")]
         [StringLength(2000, ErrorMessage = "Review must not exceed 2000 characters.")]
         public string Body { get; set; } = string.Empty;
-
-        public bool IsFavorited { get; set; }
     }
 
     public class EditReviewViewModel

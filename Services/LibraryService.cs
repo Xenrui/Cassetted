@@ -15,29 +15,11 @@ namespace Cassetted.Services
 
         public async Task<LibraryViewModel> GetLibraryAsync(string userId, string displayName)
         {
-            var recent = await BaseQuery(userId)
-                .OrderByDescending(r => r.CreatedAt)
-                .Take(10)
-                .ToListAsync();
-
-            var favorites = await BaseQuery(userId)
-                .Where(r => r.IsFavorited)
-                .OrderByDescending(r => r.CreatedAt)
-                .ToListAsync();
-
-            return new LibraryViewModel
-            {
-                UserDisplayName = displayName,
-                RecentReviews = recent,
-                Favorites = favorites
-            };
-        }
-
-        private IQueryable<LibraryReviewViewModel> BaseQuery(string userId)
-        {
-            return _db.Reviews
+            var recent = await _db.Reviews
                 .AsNoTracking()
                 .Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.CreatedAt)
+                .Take(10)
                 .Select(r => new LibraryReviewViewModel
                 {
                     Id = r.Id,
@@ -46,8 +28,33 @@ namespace Cassetted.Services
                     Rating = r.Rating,
                     Body = r.Body,
                     CreatedAt = r.CreatedAt,
-                    IsFavorited = r.IsFavorited
-                });
+                    FavoriteCount = r.Favorites.Count
+                })
+                .ToListAsync();
+
+            var favorites = await _db.ReviewFavorites
+                .AsNoTracking()
+                .Where(f => f.UserId == userId)
+                .OrderByDescending(f => f.CreatedAt)
+                .Select(f => new FavoriteCardViewModel
+                {
+                    ReviewId = f.ReviewId,
+                    ItemName = f.Review.Item.Name,
+                    CategoryName = f.Review.Item.Category.Name,
+                    Rating = f.Review.Rating,
+                    Body = f.Review.Body,
+                    AuthorUserId = f.Review.UserId,
+                    AuthorDisplayName = f.Review.User.DisplayName,
+                    SavedAt = f.CreatedAt
+                })
+                .ToListAsync();
+
+            return new LibraryViewModel
+            {
+                UserDisplayName = displayName,
+                RecentReviews = recent,
+                Favorites = favorites
+            };
         }
     }
 }

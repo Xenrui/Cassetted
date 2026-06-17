@@ -33,6 +33,8 @@ namespace Cassetted.Services
                     Body = r.Body,
                     LikeCount = r.Likes.Count,
                     IsLikedByCurrentUser = r.Likes.Any(l => l.UserId == currentUserId),
+                    FavoriteCount = r.Favorites.Count,
+                    IsFavoritedByCurrentUser = r.Favorites.Any(f => f.UserId == currentUserId),
                     IsOwnReview = r.UserId == currentUserId,
                     Comments = r.Comments
                         .OrderBy(c => c.CreatedAt)
@@ -76,6 +78,22 @@ namespace Cassetted.Services
             return (like == null, likeCount);
         }
 
+        public async Task<(bool Favorited, int FavoriteCount)> ToggleFavoriteAsync(int reviewId, string userId)
+        {
+            var fav = await _db.ReviewFavorites
+                .FirstOrDefaultAsync(f => f.ReviewId == reviewId && f.UserId == userId);
+
+            if (fav != null)
+                _db.ReviewFavorites.Remove(fav);
+            else
+                _db.ReviewFavorites.Add(new ReviewFavorite { ReviewId = reviewId, UserId = userId });
+
+            await _db.SaveChangesAsync();
+
+            var favoriteCount = await _db.ReviewFavorites.CountAsync(f => f.ReviewId == reviewId);
+            return (fav == null, favoriteCount);
+        }
+
         public async Task<EditReviewViewModel?> GetReviewForEditAsync(int reviewId, string userId)
         {
             return await _db.Reviews
@@ -89,8 +107,7 @@ namespace Cassetted.Services
                     Input = new EditReviewInputModel
                     {
                         Rating = (int)r.Rating,
-                        Body = r.Body,
-                        IsFavorited = r.IsFavorited
+                        Body = r.Body
                     }
                 })
                 .FirstOrDefaultAsync();
@@ -103,7 +120,6 @@ namespace Cassetted.Services
 
             review.Rating = input.Rating;
             review.Body = input.Body.Trim();
-            review.IsFavorited = input.IsFavorited;
             review.UpdatedAt = DateTime.UtcNow;
             await _db.SaveChangesAsync();
             return true;
@@ -147,8 +163,7 @@ namespace Cassetted.Services
                 UserId = userId,
                 ItemId = item.Id,
                 Rating = input.Rating,
-                Body = input.Body.Trim(),
-                IsFavorited = input.IsFavorited
+                Body = input.Body.Trim()
             });
             await _db.SaveChangesAsync();
 

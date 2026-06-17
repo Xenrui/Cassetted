@@ -68,7 +68,7 @@ namespace Cassetted.Services
                 .ToListAsync();
         }
 
-        public async Task<List<FeedReviewViewModel>> GetCommunityReviewsAsync(int? categoryId, int page, int pageSize)
+        public async Task<List<FeedReviewViewModel>> GetCommunityReviewsAsync(int? categoryId, int page, int pageSize, string currentUserId)
         {
             var source = _db.Reviews.AsNoTracking().AsQueryable();
             if (categoryId.HasValue)
@@ -89,7 +89,9 @@ namespace Cassetted.Services
                     Body = r.Body,
                     LikeCount = r.Likes.Count,
                     CommentCount = r.Comments.Count,
-                    IsLikedByCurrentUser = false
+                    IsLikedByCurrentUser = r.Likes.Any(l => l.UserId == currentUserId),
+                    FavoriteCount = r.Favorites.Count,
+                    IsFavoritedByCurrentUser = r.Favorites.Any(f => f.UserId == currentUserId)
                 })
                 .OrderByDescending(r => r.CreatedAt)
                 .Skip((page - 1) * pageSize)
@@ -105,7 +107,7 @@ namespace Cassetted.Services
             return await query.CountAsync();
         }
 
-        public async Task<ItemDetailViewModel?> GetItemDetailsAsync(int itemId)
+        public async Task<ItemDetailViewModel?> GetItemDetailsAsync(int itemId, string currentUserId)
         {
             var item = await _db.Items
                 .AsNoTracking()
@@ -140,7 +142,9 @@ namespace Cassetted.Services
                     Body = r.Body,
                     LikeCount = r.Likes.Count,
                     CommentCount = r.Comments.Count,
-                    IsLikedByCurrentUser = false
+                    IsLikedByCurrentUser = r.Likes.Any(l => l.UserId == currentUserId),
+                    FavoriteCount = r.Favorites.Count,
+                    IsFavoritedByCurrentUser = r.Favorites.Any(f => f.UserId == currentUserId)
                 })
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();

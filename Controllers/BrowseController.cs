@@ -1,6 +1,8 @@
+using Cassetted.Models;
 using Cassetted.Models.ViewModels;
 using Cassetted.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cassetted.Controllers
@@ -11,10 +13,12 @@ namespace Cassetted.Controllers
         private const int PageSize = 10;
 
         private readonly BrowseService _browseService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BrowseController(BrowseService browseService)
+        public BrowseController(BrowseService browseService, UserManager<ApplicationUser> userManager)
         {
             _browseService = browseService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Explore(string sort = "rating-desc", int? category = null)
@@ -25,7 +29,10 @@ namespace Cassetted.Controllers
 
         public async Task<IActionResult> Item(int id)
         {
-            var item = await _browseService.GetItemDetailsAsync(id);
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
+            var item = await _browseService.GetItemDetailsAsync(id, userId);
             if (item == null) return NotFound();
             return View(item);
         }
@@ -34,8 +41,11 @@ namespace Cassetted.Controllers
         {
             if (page < 1) page = 1;
 
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
             var popularItems = await _browseService.GetPopularItemsAsync(category);
-            var reviews = await _browseService.GetCommunityReviewsAsync(category, page, PageSize);
+            var reviews = await _browseService.GetCommunityReviewsAsync(category, page, PageSize, userId);
             var totalReviews = await _browseService.GetReviewCountAsync(category);
 
             string heading = "Browse";

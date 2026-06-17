@@ -69,7 +69,9 @@ namespace Cassetted.Services
                 Body = r.Body,
                 LikeCount = r.Likes.Count,
                 CommentCount = r.Comments.Count,
-                IsLikedByCurrentUser = r.Likes.Any(l => l.UserId == currentUserId)
+                IsLikedByCurrentUser = r.Likes.Any(l => l.UserId == currentUserId),
+                FavoriteCount = r.Favorites.Count,
+                IsFavoritedByCurrentUser = r.Favorites.Any(f => f.UserId == currentUserId)
             })
             .OrderByDescending(r => r.CreatedAt)
             .Take(50)

@@ -91,6 +91,17 @@ namespace Cassetted.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleFavorite(int reviewId)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
+            var (favorited, favoriteCount) = await _reviewService.ToggleFavoriteAsync(reviewId, userId);
+            return Json(new { favorited, favoriteCount });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = _userManager.GetUserId(User);

@@ -15,6 +15,8 @@ namespace Cassetted.Models.ViewModels
         public int LikeCount { get; set; }
         public int CommentCount { get; set; }
         public bool IsLikedByCurrentUser { get; set; }
+        public int FavoriteCount { get; set; }
+        public bool IsFavoritedByCurrentUser { get; set; }
         public string BadgeSlug => CategoryName.ToLowerInvariant().Replace(" ", "");
         public int FilledStars => (int)Math.Round(Rating);
     }

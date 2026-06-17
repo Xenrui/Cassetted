@@ -19,7 +19,5 @@ namespace Cassetted.Models.ViewModels
         [Required(ErrorMessage = "Please write a comment.")]
         [StringLength(2000, ErrorMessage = "Comment must not exceed 2000 characters.")]
         public string Body { get; set; } = string.Empty;
-
-        public bool IsFavorited { get; set; } = false;
     }
 }

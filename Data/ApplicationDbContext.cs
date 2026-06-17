@@ -4,15 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cassetted.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : IdentityDbContext<ApplicationUser>(options)
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Category> Categories => Set<Category>();
-        public DbSet<Item> Items => Set<Item>();
-        public DbSet<Review> Reviews => Set<Review>();
-        public DbSet<ReviewLike> ReviewLikes => Set<ReviewLike>();
-        public DbSet<Comment> Comments => Set<Comment>();
-        public DbSet<UserFollow> UserFollows => Set<UserFollow>();
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+
+        }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<ReviewLike> ReviewLikes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserFollow> UserFollows { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -4,6 +4,7 @@ using Cassetted.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cassetted.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260617073131_FixedCategories")]
+    partial class FixedCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +114,7 @@ namespace Cassetted.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -174,7 +177,7 @@ namespace Cassetted.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Cassetted.Models.Item", b =>
@@ -211,7 +214,7 @@ namespace Cassetted.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Cassetted.Models.Review", b =>
@@ -252,7 +255,7 @@ namespace Cassetted.Migrations
                     b.HasIndex("UserId", "ItemId")
                         .IsUnique();
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Cassetted.Models.ReviewLike", b =>
@@ -270,7 +273,7 @@ namespace Cassetted.Migrations
 
                     b.HasIndex("ReviewId");
 
-                    b.ToTable("ReviewLikes", (string)null);
+                    b.ToTable("ReviewLikes");
                 });
 
             modelBuilder.Entity("Cassetted.Models.UserFollow", b =>
@@ -288,7 +291,7 @@ namespace Cassetted.Migrations
 
                     b.HasIndex("FollowedId");
 
-                    b.ToTable("UserFollows", (string)null);
+                    b.ToTable("UserFollows");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

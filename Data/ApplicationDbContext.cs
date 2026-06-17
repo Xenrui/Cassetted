@@ -102,12 +102,15 @@ namespace Cassetted.Data
                 .HasForeignKey(i => i.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Category — categories outlive their creator
-            builder.Entity<Category>()
-                .HasOne(cat => cat.CreatedBy)
-                .WithMany(u => u.Categories)
-                .HasForeignKey(cat => cat.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Categories are fixed — seeded at startup, not user-created
+            builder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Movies" },
+                new Category { Id = 2, Name = "TV Shows" },
+                new Category { Id = 3, Name = "Music" },
+                new Category { Id = 4, Name = "Books" },
+                new Category { Id = 5, Name = "Anime" },
+                new Category { Id = 6, Name = "Games" }
+            );
         }
     }
 }

@@ -35,8 +35,9 @@ Identity (Razor Pages for Login/Register, MVC for everything else).
 |--------|---------|
 | `Category` | Fixed system categories (Movies, TV Shows, Music, Books, Anime, Games) — seeded in `ApplicationDbContext`, never user-created |
 | `Item` | Things being rated within a category; created by users on the fly when writing the first review |
-| `Review` | One review per user per item; `Rating` is `decimal(3,1)` [0.5–5.0]; unique index `{UserId, ItemId}`; has `IsFavorited` flag |
-| `ReviewLike` | Composite PK `{UserId, ReviewId}` |
+| `Review` | One review per user per item; `Rating` is `decimal(3,1)` [0.5–5.0]; unique index `{UserId, ItemId}` |
+| `ReviewLike` | Composite PK `{UserId, ReviewId}` — any user can like any review |
+| `ReviewFavorite` | Composite PK `{UserId, ReviewId}` — any user can save any review (mirrors `ReviewLike`) |
 | `Comment` | Belongs to a Review |
 | `UserFollow` | Composite PK `{FollowerId, FollowedId}`; both FKs `Restrict` to avoid multi-cascade paths |
 

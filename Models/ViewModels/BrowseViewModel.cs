@@ -1,5 +1,12 @@
 namespace Cassetted.Models.ViewModels
 {
+    public class ExploreViewModel
+    {
+        public List<BrowseItemViewModel> Items { get; set; } = [];
+        public string SortBy { get; set; } = "rating-desc";
+        public int? CategoryId { get; set; }
+    }
+
     public class BrowseItemViewModel
     {
         public int Id { get; set; }

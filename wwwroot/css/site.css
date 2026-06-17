@@ -161,10 +161,12 @@ body {
   font-size: .75rem;
   padding: 3px 10px;
 }
-.c-badge--movies { background: rgba(255,140,160,.18); color: #ff9ab0; border: 1px solid rgba(255,140,160,.28); }
-.c-badge--games  { background: rgba(180,130,255,.18); color: #c490ff; border: 1px solid rgba(180,130,255,.28); }
-.c-badge--books  { background: rgba(80,200,160,.18);  color: #50c8a0; border: 1px solid rgba(80,200,160,.28); }
-.c-badge--anime  { background: rgba(255,215,60,.18);  color: #ffd73c; border: 1px solid rgba(255,215,60,.28); }
+.c-badge--movies  { background: rgba(255,140,160,.18); color: #ff9ab0; border: 1px solid rgba(255,140,160,.28); }
+.c-badge--games   { background: rgba(180,130,255,.18); color: #c490ff; border: 1px solid rgba(180,130,255,.28); }
+.c-badge--books   { background: rgba(80,200,160,.18);  color: #50c8a0; border: 1px solid rgba(80,200,160,.28); }
+.c-badge--anime   { background: rgba(255,215,60,.18);  color: #ffd73c; border: 1px solid rgba(255,215,60,.28); }
+.c-badge--tvshows { background: rgba(255,180,90,.18);  color: #ffb45a; border: 1px solid rgba(255,180,90,.28); }
+.c-badge--music   { background: rgba(100,190,255,.18); color: #64beff; border: 1px solid rgba(100,190,255,.28); }
 
 /* ── Shared: Stars ── */
 .c-stars { font-size: 1rem; color: #f5c518; letter-spacing: .05em; }

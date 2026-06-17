@@ -23,6 +23,19 @@ namespace Cassetted.Controllers
             _browseService = browseService;
         }
 
+        public async Task<IActionResult> Explore(string sort = "rating-desc", int? category = null)
+        {
+            var items = await _browseService.GetExploreItemsAsync(category, sort);
+            return View(new ExploreViewModel { Items = items, SortBy = sort, CategoryId = category });
+        }
+
+        public async Task<IActionResult> Item(int id)
+        {
+            var item = await _browseService.GetItemDetailsAsync(id);
+            if (item == null) return NotFound();
+            return View(item);
+        }
+
         public async Task<IActionResult> Index(int? category = null, int page = 1)
         {
             if (page < 1) page = 1;

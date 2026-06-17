@@ -19,7 +19,7 @@
     <section class="c-browse-explore">
         <div class="d-flex align-items-center justify-content-between mb-3">
             <h2 class="c-browse-explore__title">Explore</h2>
-            <a href="/Browse" class="c-browse-explore__view-all">View All</a>
+            <a asp-controller="Browse" asp-action="Explore" asp-route-category="@Model.CategoryId" class="c-browse-explore__view-all">View All</a>
         </div>
 
         @if (!Model.PopularItems.Any())
@@ -33,7 +33,7 @@
                     @foreach (var item in Model.PopularItems)
                     {
                         var badgeClass = item.CategoryName.ToLower().Replace(" ", "");
-                        <div class="c-item-card">
+                        <a class="c-item-card" asp-controller="Browse" asp-action="Item" asp-route-id="@item.Id">
                             <span class="c-item-card__badge c-badge c-badge--@badgeClass rounded-pill">@item.CategoryName</span>
                             <h3 class="c-item-card__title">@item.Name</h3>
                             <div class="c-item-card__rating d-flex align-items-center">
@@ -44,7 +44,7 @@
                                 @item.CommentCount recent discussions<br />
                                 @item.ReviewCount overall reviews
                             </div>
-                        </div>
+                        </a>
                     }
                 </div>
 

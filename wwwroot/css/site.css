@@ -178,7 +178,10 @@ body {
   border-radius: 12px;
   padding: 1.25rem 1.4rem;
   margin-bottom: 1rem;
+  cursor: pointer;
+  transition: border-color .2s;
 }
+.c-review-card:hover { border-color: rgba(77, 196, 164, .3); }
 
 .c-review-card__header { margin-bottom: 0.6rem; }
 
@@ -202,6 +205,8 @@ body {
   margin: 0.35rem 0 0.6rem;
   letter-spacing: 0.01em;
 }
+.c-review-card__title a { color: inherit; text-decoration: none; }
+.c-review-card__title a:hover { color: #4dc4a4; }
 
 .c-review-card__body {
   font-family: 'Outfit', sans-serif;

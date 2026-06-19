@@ -5,6 +5,36 @@
     window.location.href = card.dataset.href;
 });
 
+(function () {
+    const track = document.querySelector('.c-browse-explore__track');
+    if (!track) return;
+
+    const cards = Array.from(track.children);
+    const pageSize = 4;
+    let page = 0;
+    const totalPages = Math.ceil(cards.length / pageSize);
+
+    const prevBtn = document.querySelector('.c-browse-explore__arrow--prev');
+    const nextBtn = document.querySelector('.c-browse-explore__arrow--next');
+
+    function render() {
+        cards.forEach(function (card, i) {
+            card.style.display = (i >= page * pageSize && i < (page + 1) * pageSize) ? '' : 'none';
+        });
+        if (prevBtn) prevBtn.disabled = page === 0;
+        if (nextBtn) nextBtn.disabled = page >= totalPages - 1;
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () {
+        if (page > 0) { page--; render(); }
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function () {
+        if (page < totalPages - 1) { page++; render(); }
+    });
+
+    render();
+}());
+
 document.addEventListener('click', async function (e) {
     const btn = e.target.closest('.c-like-btn');
     if (!btn) return;

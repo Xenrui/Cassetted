@@ -38,7 +38,7 @@
   background: rgba(8, 22, 18, 0.5);
   border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 16px;
-  padding: 1.4rem 4.5rem 1.4rem 1.4rem;
+  padding: 1.4rem 4.5rem;
   position: relative;
 }
 
@@ -50,7 +50,6 @@
 
 .c-browse-explore__arrow {
   position: absolute;
-  right: 1.1rem;
   top: 50%;
   transform: translateY(-50%);
   width: 42px;
@@ -61,10 +60,13 @@
   color: #ffffff;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: background .2s;
+  transition: background .2s, opacity .2s;
   flex-shrink: 0;
 }
-.c-browse-explore__arrow:hover { background: #244d42; }
+.c-browse-explore__arrow--prev { left: 1.1rem; }
+.c-browse-explore__arrow--next { right: 1.1rem; }
+.c-browse-explore__arrow:hover:not(:disabled) { background: #244d42; }
+.c-browse-explore__arrow:disabled { opacity: 0.3; cursor: default; }
 
 /* ── Item cards ── */
 .c-item-card {

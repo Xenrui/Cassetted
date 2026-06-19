@@ -28,6 +28,12 @@
         else
         {
             <div class="c-browse-explore__wrap">
+                <button class="c-browse-explore__arrow c-browse-explore__arrow--prev d-flex align-items-center justify-content-center" aria-label="Previous">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
                 <div class="c-browse-explore__track">
                     @foreach (var item in Model.PopularItems)
                     {
@@ -46,7 +52,7 @@
                     }
                 </div>
 
-                <button class="c-browse-explore__arrow d-flex align-items-center justify-content-center" aria-label="Next">
+                <button class="c-browse-explore__arrow c-browse-explore__arrow--next d-flex align-items-center justify-content-center" aria-label="Next">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>

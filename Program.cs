@@ -28,9 +28,17 @@ builder.Services.AddScoped<Cassetted.Services.BrowseService>();
 builder.Services.AddScoped<Cassetted.Services.LibraryService>();
 builder.Services.AddScoped<Cassetted.Services.ProfileService>();
 builder.Services.AddScoped<Cassetted.Services.SearchService>();
+builder.Services.AddScoped<Cassetted.Services.DevDataSeeder>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<Cassetted.Services.DevDataSeeder>();
+    await seeder.SeedAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

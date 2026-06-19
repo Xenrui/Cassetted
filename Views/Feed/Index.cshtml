@@ -120,7 +120,8 @@
                         @for (int i = 0; i < Model.TrendingItems.Count; i++)
                         {
                             var item = Model.TrendingItems[i];
-                            <div class="c-trending__item d-flex align-items-center gap-3">
+                            <a class="c-trending__item d-flex align-items-center gap-3"
+                               asp-controller="Browse" asp-action="Item" asp-route-id="@item.Id">
                                 <span class="c-trending__rank">@(i + 1)</span>
                                 <div class="c-trending__info">
                                     <div class="c-trending__title">@item.Name</div>
@@ -133,7 +134,7 @@
                                     </div>
                                 </div>
                                 <span class="c-badge c-badge--@item.BadgeSlug rounded-pill">@item.CategoryName</span>
-                            </div>
+                            </a>
                         }
                     }
                 </div>

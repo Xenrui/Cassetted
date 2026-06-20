@@ -288,12 +288,14 @@ a.c-review-card__username:hover { color: #4dc4a4; }
   background: none;
   padding: 5px 10px;
   border-radius: 7px;
+  text-decoration: none;
   transition: color .15s, background .15s;
 }
 .c-action-btn:hover, .c-action-btn:focus {
   color: rgba(255,255,255,.85) !important;
   background: rgba(255,255,255,.07);
   box-shadow: none;
+  text-decoration: none;
 }
 
 /* ── Like button ── */

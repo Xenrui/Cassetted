@@ -9,6 +9,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/browse.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/feed.css" asp-append-version="true" />
 }
 
 <div class="c-browse">
@@ -120,12 +121,12 @@
                             </svg>
                             Save<span class="c-fav-count">@(review.FavoriteCount > 0 ? $" · {review.FavoriteCount}" : "")</span>
                         </button>
-                        <button class="c-action-btn d-inline-flex align-items-center gap-2">
+                        <a class="c-action-btn d-inline-flex align-items-center gap-2" asp-controller="Review" asp-action="Details" asp-route-id="@review.Id">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             Reply@(review.CommentCount > 0 ? $" · {review.CommentCount}" : "")
-                        </button>
+                        </a>
                     </div>
                 </div>
             }
